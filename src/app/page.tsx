@@ -103,10 +103,10 @@ export default function Home() {
       {/* Logo */}
       <div className="mb-12 logo-glow">
         <Image
-          src="/logo_w_text.svg"
+          src="/logo_w_creepytext.svg"
           alt="Smirk Wallet"
-          width={200}
-          height={180}
+          width={220}
+          height={200}
           priority
         />
       </div>
