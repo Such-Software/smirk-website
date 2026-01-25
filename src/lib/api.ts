@@ -34,8 +34,8 @@ export async function getChallenge(origin: string): Promise<ChallengeResponse> {
   });
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || 'Failed to get challenge');
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || data.message || 'Failed to get challenge');
   }
 
   return res.json();
@@ -55,8 +55,8 @@ export async function verifySignature(
   });
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || 'Failed to verify signature');
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || data.message || 'Failed to verify signature');
   }
 
   return res.json();

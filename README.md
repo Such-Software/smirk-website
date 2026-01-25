@@ -52,13 +52,11 @@ The Smirk extension injects a `window.smirk` API object into web pages. The webs
 5. Website calls `POST /api/v1/auth/website/challenge` with origin
 6. Backend returns challenge message (with nonce + timestamp + origin)
 7. Website calls `window.smirk.signMessage(challenge)`
-8. Extension shows signing popup with the message
-9. User approves → Extension returns signatures from all 5 keys
-10. Website sends `{ challenge_id, signatures }` to `POST /api/v1/auth/website/verify`
-11. Backend verifies signatures, looks up user by BTC pubkey_hash, issues JWT session
+8. Extension shows asset picker - user chooses favorite coin
+9. User signs → Extension returns signature from chosen asset
+10. Website sends `{ challenge_id, signature }` to `POST /api/v1/auth/website/verify`
+11. Backend verifies signature, looks up user by pubkey_hash, issues JWT session
 12. Website stores JWT, user is now authenticated
-
-**Future**: Allow single-asset auth (user picks their favorite coin to sign with).
 
 ### Tech Stack
 

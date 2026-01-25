@@ -60,14 +60,17 @@ export default function Home() {
       const challenge = await getChallenge(window.location.origin);
 
       // Sign with the selected coin
-      const signatures = await window.smirk.signMessage(challenge.challenge);
-      const sig = signatures[coin];
+      const result = await window.smirk.signMessage(challenge.challenge);
+      const sig = result.signatures.find((s) => s.asset === coin);
+      if (!sig) {
+        throw new Error(`No signature found for ${coin}`);
+      }
 
       // Verify with backend
       const auth = await verifySignature(challenge.challenge_id, {
         asset: coin,
         signature: sig.signature,
-        public_key: sig.public_key,
+        public_key: sig.publicKey,
       });
 
       // Store token and show logged in
@@ -101,14 +104,18 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
       {/* Logo */}
-      <div className="mb-12 logo-glow">
-        <Image
-          src="/logo_w_creepytext.svg"
-          alt="Smirk Wallet"
-          width={220}
-          height={200}
-          priority
-        />
+      <div className="mb-12 flex flex-col items-center">
+        <h1 className="creepster-text text-4xl mb-4">SMIRK WALLET</h1>
+        <div className="logo-glow">
+          <Image
+            src="/logo.svg"
+            alt="Smirk"
+            width={160}
+            height={160}
+            priority
+          />
+        </div>
+        <p className="creepster-text text-2xl mt-4">smirk.ca$h</p>
       </div>
 
       {/* Initial state - Connect button */}

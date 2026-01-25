@@ -134,14 +134,11 @@ Origin: https://smirk.cash
 
 Challenge should expire after ~5 minutes to prevent replay attacks.
 
-### Single-Asset Authentication (Future Enhancement)
+### Single-Asset Authentication (DONE - 2026-01-25)
 
-**Current implementation**: Backend requires signatures from all 5 asset keys.
+User picks their favorite coin to sign with:
+- Simpler UX - choose one coin, sign once
+- User data - "What's your favorite coin?" insight
+- Any of the 5 coins proves wallet ownership
 
-**Better approach**: Let users pick their favorite coin to sign with. Benefits:
-1. **Simpler UX** - User chooses one coin, signs once
-2. **User data** - "What's your favorite coin?" gives us insight into our user base
-3. **Proof of concept** - Demonstrates wallet-based auth for ANY of these 5 coins
-4. **Still secure** - We already know all 5 pubkeys; signing with ANY one proves wallet ownership
-
-This positions Smirk as infrastructure for wallet-based authentication across multiple cryptocurrencies. Other websites could use the same pattern - "Sign in with Bitcoin/Litecoin/Monero/Wownero/Grin".
+This positions Smirk as infrastructure for wallet-based authentication across multiple cryptocurrencies.

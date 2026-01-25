@@ -9,25 +9,23 @@ interface SmirkPublicKeys {
 }
 
 interface SmirkSignature {
-  asset: string;
+  asset: 'btc' | 'ltc' | 'xmr' | 'wow' | 'grin';
   signature: string;
-  public_key: string;
+  publicKey: string;
 }
 
-interface SmirkSignatures {
-  btc: SmirkSignature;
-  ltc: SmirkSignature;
-  xmr: SmirkSignature;
-  wow: SmirkSignature;
-  grin: SmirkSignature;
+interface SmirkSignResult {
+  message: string;
+  signatures: SmirkSignature[];
 }
 
 interface SmirkAPI {
+  isSmirk: boolean;
   connect(): Promise<SmirkPublicKeys>;
   disconnect(): Promise<void>;
   isConnected(): Promise<boolean>;
   getPublicKeys(): Promise<SmirkPublicKeys | null>;
-  signMessage(message: string): Promise<SmirkSignatures>;
+  signMessage(message: string): Promise<SmirkSignResult>;
 }
 
 interface Window {

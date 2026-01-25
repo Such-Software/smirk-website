@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Creepster';
+  src: url('/fonts/Creepster-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -72,4 +80,14 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
   text-transform: uppercase;
+}
+
+/* Creepster text styling */
+.creepster-text {
+  font-family: 'Creepster', cursive;
+  color: #fbeb0a;
+  text-shadow:
+    0 0 10px rgba(251, 235, 10, 0.6),
+    0 0 20px rgba(251, 235, 10, 0.4),
+    0 0 30px rgba(251, 235, 10, 0.2);
 }
