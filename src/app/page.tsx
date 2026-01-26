@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getChallenge, verifySignature, type AuthResponse } from '@/lib/api';
 
 type Asset = 'btc' | 'ltc' | 'xmr' | 'wow' | 'grin';
@@ -220,13 +221,22 @@ export default function Home() {
             )}
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="px-6 py-2 border border-zinc-700 rounded-lg
-                       hover:border-zinc-500 transition-colors text-sm"
-          >
-            Disconnect
-          </button>
+          <div className="flex gap-4">
+            <Link
+              href="/settings"
+              className="px-6 py-2 bg-[#fbeb0a] text-black font-medium rounded-lg
+                         hover:bg-[#d4c708] transition-colors text-sm"
+            >
+              Settings
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="px-6 py-2 border border-zinc-700 rounded-lg
+                         hover:border-zinc-500 transition-colors text-sm"
+            >
+              Disconnect
+            </button>
+          </div>
         </div>
       )}
 
