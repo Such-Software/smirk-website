@@ -7,7 +7,8 @@ User dashboard for Smirk wallet users. Requires the Smirk browser extension to a
 This website serves as a hub for Smirk wallet users to:
 - View their account UUID and balances
 - See tipping history (sent and received)
-- Manage connected accounts (Telegram, Discord, etc.)
+- **Register & verify social platform usernames** (Telegram, Discord)
+- **Manage social tips** - view sent/received, clawback unclaimed
 - Future: Chat/messaging between users, direct tipping, etc.
 
 **Important**: This site is ONLY accessible to users with the Smirk extension installed. Authentication happens via cryptographic signatures from the user's wallet keys.

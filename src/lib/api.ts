@@ -142,3 +142,105 @@ export async function unlinkSocial(token: string, platform: string): Promise<voi
     throw new Error(data.error || 'Failed to unlink account');
   }
 }
+
+// =============================================================================
+// Public Tips
+// =============================================================================
+
+export interface PublicTipInfo {
+  id: string;
+  asset: string;
+  amount: number;
+  status: string;
+  created_at: string;
+  is_public: boolean;
+}
+
+export async function getPublicTipInfo(tipId: string): Promise<PublicTipInfo> {
+  const res = await fetch(`${API_URL}/api/v1/tips/social/${tipId}/public`);
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error('Tip not found or not available');
+    }
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to get tip info');
+  }
+
+  return res.json();
+}
+
+// =============================================================================
+// User Tips
+// =============================================================================
+
+export interface SentTip {
+  id: string;
+  recipient_platform: string | null;
+  recipient_username: string | null;
+  asset: string;
+  amount: number;
+  is_public: boolean;
+  status: string;
+  created_at: string;
+  claimed_at: string | null;
+  clawed_back_at: string | null;
+}
+
+export interface ClaimableTip {
+  id: string;
+  asset: string;
+  amount: number;
+  from_platform: string | null;
+  created_at: string;
+}
+
+export interface ReceivedTip {
+  id: string;
+  sender_user_id: string;
+  recipient_platform: string | null;
+  recipient_username: string | null;
+  asset: string;
+  amount: number;
+  is_public: boolean;
+  status: string;
+  created_at: string;
+  claimed_at: string | null;
+  clawed_back_at: string | null;
+}
+
+export async function getSentTips(token: string): Promise<{ tips: SentTip[] }> {
+  const res = await fetch(`${API_URL}/api/v1/tips/social/sent`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to get sent tips');
+  }
+
+  return res.json();
+}
+
+export async function getReceivedTips(token: string): Promise<{ tips: ReceivedTip[] }> {
+  const res = await fetch(`${API_URL}/api/v1/tips/social/received`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to get received tips');
+  }
+
+  return res.json();
+}
+
+export async function getClaimableTips(token: string): Promise<{ tips: ClaimableTip[] }> {
+  const res = await fetch(`${API_URL}/api/v1/tips/social/claimable`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to get claimable tips');
+  }
+
+  return res.json();
+}

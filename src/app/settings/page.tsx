@@ -129,6 +129,12 @@ export default function SettingsPage() {
           <Image src="/logo.svg" alt="Smirk" width={40} height={40} />
           <span className="creepster-text text-xl">SMIRK</span>
         </Link>
+        <Link
+          href="/tips"
+          className="text-sm text-zinc-400 hover:text-white"
+        >
+          Tips
+        </Link>
       </div>
 
       <h1 className="text-2xl font-bold mb-8">Settings</h1>

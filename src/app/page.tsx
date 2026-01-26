@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getChallenge, verifySignature, type AuthResponse } from '@/lib/api';
+import { getChallenge, verifySignature, getMe, type AuthResponse } from '@/lib/api';
 
 type Asset = 'btc' | 'ltc' | 'xmr' | 'wow' | 'grin';
 
@@ -23,6 +23,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<AuthResponse['user'] | null>(null);
   const [hasExtension, setHasExtension] = useState<boolean | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
 
   // Check for extension on mount
   useEffect(() => {
@@ -97,10 +98,35 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem('smirk_token');
     if (token) {
-      // TODO: Validate token with /auth/me
-      // For now, just clear it and require re-auth
+      // Validate token with /auth/me
+      getMe(token)
+        .then((userData) => {
+          setUser({
+            id: userData.id,
+            telegram_id: userData.telegram_id,
+            telegram_username: userData.telegram_username,
+          });
+          setStep('logged-in');
+        })
+        .catch(() => {
+          // Token invalid or expired - clear it
+          localStorage.removeItem('smirk_token');
+          localStorage.removeItem('smirk_refresh');
+        })
+        .finally(() => setCheckingSession(false));
+    } else {
+      setCheckingSession(false);
     }
   }, []);
+
+  // Show loading while checking session
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-2 border-[#fbeb0a] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
@@ -223,16 +249,23 @@ export default function Home() {
 
           <div className="flex gap-4">
             <Link
+              href="/tips"
+              className="px-6 py-2 border border-zinc-700 rounded-lg text-sm
+                         hover:border-[#fbeb0a] hover:shadow-[0_0_12px_rgba(251,235,10,0.4)] transition-all"
+            >
+              Tips
+            </Link>
+            <Link
               href="/settings"
-              className="px-6 py-2 bg-[#fbeb0a] text-black font-medium rounded-lg
-                         hover:bg-[#d4c708] transition-colors text-sm"
+              className="px-6 py-2 border border-zinc-700 rounded-lg text-sm
+                         hover:border-[#fbeb0a] hover:shadow-[0_0_12px_rgba(251,235,10,0.4)] transition-all"
             >
               Settings
             </Link>
             <button
               onClick={handleLogout}
-              className="px-6 py-2 border border-zinc-700 rounded-lg
-                         hover:border-zinc-500 transition-colors text-sm"
+              className="px-6 py-2 border border-zinc-700 rounded-lg text-sm
+                         hover:border-[#fbeb0a] hover:shadow-[0_0_12px_rgba(251,235,10,0.4)] transition-all"
             >
               Disconnect
             </button>
