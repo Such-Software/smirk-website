@@ -8,6 +8,8 @@ import {
   getLinkedSocials,
   registerSocial,
   unlinkSocial,
+  getMyUsername,
+  setUsername,
   type MeResponse,
   type LinkedSocial,
 } from '@/lib/api';
@@ -19,6 +21,13 @@ export default function SettingsPage() {
   const [socials, setSocials] = useState<LinkedSocial[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Username state
+  const [smirkUsername, setSmirkUsername] = useState<string>('');
+  const [editingUsername, setEditingUsername] = useState(false);
+  const [usernameInput, setUsernameInput] = useState('');
+  const [usernameError, setUsernameError] = useState<string | null>(null);
+  const [savingUsername, setSavingUsername] = useState(false);
 
   // Telegram linking state
   const [linkStep, setLinkStep] = useState<LinkStep>('idle');
@@ -35,14 +44,42 @@ export default function SettingsPage() {
       return;
     }
 
-    Promise.all([getMe(token), getLinkedSocials(token)])
-      .then(([userData, socialsData]) => {
+    Promise.all([getMe(token), getLinkedSocials(token), getMyUsername(token)])
+      .then(([userData, socialsData, username]) => {
         setUser(userData);
         setSocials(socialsData.socials);
+        setSmirkUsername(username || '');
+        setUsernameInput(username || '');
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [token]);
+
+  const handleSaveUsername = async () => {
+    if (!token) return;
+    const trimmed = usernameInput.trim().toLowerCase();
+
+    if (trimmed.length < 3 || trimmed.length > 32) {
+      setUsernameError('Username must be 3-32 characters');
+      return;
+    }
+    if (!/^[a-z0-9_]+$/.test(trimmed)) {
+      setUsernameError('Only lowercase letters, numbers, and underscores allowed');
+      return;
+    }
+
+    setSavingUsername(true);
+    setUsernameError(null);
+    try {
+      const result = await setUsername(token, trimmed);
+      setSmirkUsername(result.username);
+      setEditingUsername(false);
+    } catch (err) {
+      setUsernameError(err instanceof Error ? err.message : 'Failed to save username');
+    } finally {
+      setSavingUsername(false);
+    }
+  };
 
   const handleStartLink = () => {
     setLinkStep('entering');
@@ -151,6 +188,70 @@ export default function SettingsPage() {
         <div className="bg-zinc-900 rounded-xl p-4">
           <p className="text-zinc-500 text-xs mb-1">User ID</p>
           <p className="font-mono text-sm break-all">{user.id}</p>
+        </div>
+      </section>
+
+      {/* Smirk Username */}
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold mb-4 text-zinc-400">Smirk Username</h2>
+        <div className="bg-zinc-900 rounded-xl p-4">
+          {!editingUsername ? (
+            <div className="flex items-center justify-between">
+              <div>
+                {smirkUsername ? (
+                  <>
+                    <p className="text-zinc-500 text-xs mb-1">Your username</p>
+                    <p className="text-[#fbeb0a] font-medium">@{smirkUsername}</p>
+                  </>
+                ) : (
+                  <p className="text-zinc-500 text-sm">No username set</p>
+                )}
+              </div>
+              <button
+                onClick={() => setEditingUsername(true)}
+                className="px-4 py-2 bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708]"
+              >
+                {smirkUsername ? 'Change' : 'Set Username'}
+              </button>
+            </div>
+          ) : (
+            <div>
+              <label className="block text-sm text-zinc-400 mb-2">
+                Choose a username (3-32 chars, lowercase alphanumeric + underscores)
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={usernameInput}
+                  onChange={(e) => setUsernameInput(e.target.value.toLowerCase())}
+                  placeholder="my_username"
+                  maxLength={32}
+                  className="flex-1 px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#fbeb0a]"
+                />
+                <button
+                  onClick={handleSaveUsername}
+                  disabled={savingUsername}
+                  className="px-4 py-2 bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708] disabled:opacity-50"
+                >
+                  {savingUsername ? 'Saving...' : 'Save'}
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingUsername(false);
+                    setUsernameInput(smirkUsername);
+                    setUsernameError(null);
+                  }}
+                  className="px-4 py-2 border border-zinc-700 rounded-lg hover:border-zinc-500"
+                >
+                  Cancel
+                </button>
+              </div>
+              {usernameError && <p className="mt-2 text-sm text-red-400">{usernameError}</p>}
+              <p className="mt-3 text-xs text-zinc-500">
+                Others can tip you directly using your Smirk username
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

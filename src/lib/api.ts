@@ -256,3 +256,73 @@ export async function getClaimableTips(token: string): Promise<{ tips: Claimable
 
   return res.json();
 }
+
+// =============================================================================
+// Username Management
+// =============================================================================
+
+export async function getMyUsername(token: string): Promise<string | null> {
+  const res = await fetch(`${API_URL}/api/v1/users/me/username`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to get username');
+  }
+
+  return res.json();
+}
+
+export async function setUsername(token: string, username: string): Promise<{ username: string }> {
+  const res = await fetch(`${API_URL}/api/v1/users/me/username`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ username }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to set username');
+  }
+
+  return res.json();
+}
+
+export interface UserLookupResponse {
+  user_id: string;
+  username: string;
+}
+
+export async function lookupByUsername(username: string): Promise<UserLookupResponse> {
+  const res = await fetch(`${API_URL}/api/v1/users/by-username/${encodeURIComponent(username)}`);
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error('User not found');
+    }
+    throw new Error('Failed to lookup user');
+  }
+
+  return res.json();
+}
+
+// =============================================================================
+// User Count (Public)
+// =============================================================================
+
+export interface UserCountResponse {
+  count: number;
+}
+
+export async function getUserCount(): Promise<UserCountResponse> {
+  const res = await fetch(`${API_URL}/api/v1/users/count`);
+
+  if (!res.ok) {
+    throw new Error('Failed to get user count');
+  }
+
+  return res.json();
+}

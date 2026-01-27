@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getChallenge, verifySignature, getMe, type AuthResponse } from '@/lib/api';
+import { getChallenge, verifySignature, getMe, getUserCount, type AuthResponse } from '@/lib/api';
 
 type Asset = 'btc' | 'ltc' | 'xmr' | 'wow' | 'grin';
 
@@ -24,6 +24,7 @@ export default function Home() {
   const [user, setUser] = useState<AuthResponse['user'] | null>(null);
   const [hasExtension, setHasExtension] = useState<boolean | null>(null);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [userCount, setUserCount] = useState<number | null>(null);
 
   // Check for extension on mount
   useEffect(() => {
@@ -32,6 +33,13 @@ export default function Home() {
     check();
     const timeout = setTimeout(check, 500);
     return () => clearTimeout(timeout);
+  }, []);
+
+  // Fetch user count on mount
+  useEffect(() => {
+    getUserCount()
+      .then((data) => setUserCount(data.count))
+      .catch(() => {}); // Silently ignore errors
   }, []);
 
   const handleConnect = async () => {
@@ -143,6 +151,12 @@ export default function Home() {
           />
         </div>
         <p className="creepster-text text-2xl mt-4">smirk.ca$h</p>
+        {userCount !== null && userCount > 0 && (
+          <p className="text-zinc-500 text-sm mt-4">
+            <span className="text-[#fbeb0a] font-semibold">{userCount.toLocaleString()}</span>{' '}
+            {userCount === 1 ? 'smirker' : 'smirkers'} and counting
+          </p>
+        )}
       </div>
 
       {/* Initial state - Connect button */}
