@@ -304,6 +304,20 @@ export default function TipPage() {
             </div>
           )}
 
+          {/* Public tip with missing fragment key */}
+          {tip.status === 'pending' && tip.is_public && !fragmentKey && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-red-400">Incomplete Link</h2>
+              <div className="text-zinc-400 text-sm space-y-2">
+                <p>This is a public tip, but the claim link is incomplete.</p>
+                <p>Make sure you have the <strong>full URL</strong> including the secret key after the <code className="bg-zinc-800 px-1 rounded">#</code> symbol.</p>
+                <p className="text-zinc-500 text-xs mt-4">
+                  Example: smirk.cash/tip/abc123<strong>#secretKey</strong>
+                </p>
+              </div>
+            </div>
+          )}
+
           {tip.status === 'claimed' && (
             <p className="text-green-400">This tip has already been claimed.</p>
           )}
