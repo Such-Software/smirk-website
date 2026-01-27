@@ -318,7 +318,7 @@ export default function TipPage() {
             </div>
           )}
 
-          {tip.status === 'claimed' && (
+          {tip.status === 'claimed' && !claimSuccess && (
             <p className="text-green-400">This tip has already been claimed.</p>
           )}
 
