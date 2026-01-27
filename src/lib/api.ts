@@ -185,6 +185,12 @@ export interface SentTip {
   created_at: string;
   claimed_at: string | null;
   clawed_back_at: string | null;
+  /** Current number of confirmations for funding tx */
+  funding_confirmations: number;
+  /** Required confirmations before tip is claimable (XMR/GRIN=10, WOW=4, BTC/LTC=0) */
+  confirmations_required: number;
+  /** Whether the tip has enough confirmations to be claimed */
+  is_claimable: boolean;
 }
 
 export interface ClaimableTip {
@@ -207,6 +213,12 @@ export interface ReceivedTip {
   created_at: string;
   claimed_at: string | null;
   clawed_back_at: string | null;
+  /** Current number of confirmations for funding tx */
+  funding_confirmations: number;
+  /** Required confirmations before tip is claimable (XMR/GRIN=10, WOW=4, BTC/LTC=0) */
+  confirmations_required: number;
+  /** Whether the tip has enough confirmations to be claimed */
+  is_claimable: boolean;
 }
 
 export async function getSentTips(token: string): Promise<{ tips: SentTip[] }> {

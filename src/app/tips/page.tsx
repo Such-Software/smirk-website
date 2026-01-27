@@ -56,6 +56,34 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+function ConfirmationBadge({
+  confirmations,
+  required,
+  isClaimable
+}: {
+  confirmations: number;
+  required: number;
+  isClaimable: boolean;
+}) {
+  if (required === 0) {
+    return null; // BTC/LTC don't need confirmations
+  }
+
+  if (isClaimable) {
+    return (
+      <span className="px-2 py-0.5 text-xs font-medium rounded border bg-green-500/20 text-green-400 border-green-500/50">
+        Confirmed
+      </span>
+    );
+  }
+
+  return (
+    <span className="px-2 py-0.5 text-xs font-medium rounded border bg-orange-500/20 text-orange-400 border-orange-500/50">
+      {confirmations}/{required} confirmations
+    </span>
+  );
+}
+
 export default function TipsPage() {
   const [user, setUser] = useState<MeResponse | null>(null);
   const [sentTips, setSentTips] = useState<SentTip[]>([]);
@@ -88,16 +116,24 @@ export default function TipsPage() {
       return;
     }
 
-    Promise.all([getMe(token), getSentTips(token), getReceivedTips(token), getClaimableTips(token)])
-      .then(([userData, sentData, receivedData, claimableData]) => {
-        setUser(userData);
-        setSentTips(sentData.tips);
-        setReceivedTips(receivedData.tips);
-        // Track which tips are claimable (pending, have encrypted_key)
-        setClaimableTipIds(new Set(claimableData.tips.map((t: ClaimableTip) => t.id)));
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    const fetchData = () => {
+      Promise.all([getMe(token), getSentTips(token), getReceivedTips(token), getClaimableTips(token)])
+        .then(([userData, sentData, receivedData, claimableData]) => {
+          setUser(userData);
+          setSentTips(sentData.tips);
+          setReceivedTips(receivedData.tips);
+          // Track which tips are claimable (pending, confirmed, have encrypted_key)
+          setClaimableTipIds(new Set(claimableData.tips.map((t: ClaimableTip) => t.id)));
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    };
+
+    fetchData();
+
+    // Poll for updates every 30 seconds for confirmation status
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, [token]);
 
   const handleOpenExtension = (action: 'claim' | 'clawback', tipId?: string) => {
@@ -131,6 +167,10 @@ export default function TipsPage() {
 
   const pendingSent = sentTips.filter((t) => t.status === 'pending');
   const pendingReceived = receivedTips.filter((t) => t.status === 'pending');
+  // Count actually claimable (confirmed) pending tips
+  const claimableReceived = pendingReceived.filter((t) => t.is_claimable);
+  // Count tips waiting for confirmations
+  const confirmingReceived = pendingReceived.filter((t) => !t.is_claimable && t.confirmations_required > 0);
 
   return (
     <div className="min-h-screen p-8 max-w-3xl mx-auto">
@@ -188,7 +228,11 @@ export default function TipsPage() {
         >
           Sent ({sentTips.length})
           {pendingSent.length > 0 && (
-            <span className="ml-2 px-1.5 py-0.5 text-xs bg-yellow-500/30 text-yellow-400 rounded">
+            <span className={`ml-2 px-1.5 py-0.5 text-xs rounded ${
+              activeTab === 'sent'
+                ? 'bg-yellow-700 text-white'
+                : 'bg-yellow-500/30 text-yellow-400'
+            }`}>
               {pendingSent.length} pending
             </span>
           )}
@@ -202,9 +246,22 @@ export default function TipsPage() {
           }`}
         >
           Received ({receivedTips.length})
-          {pendingReceived.length > 0 && (
-            <span className="ml-2 px-1.5 py-0.5 text-xs bg-green-500/30 text-green-400 rounded">
-              {pendingReceived.length} claimable
+          {claimableReceived.length > 0 && (
+            <span className={`ml-2 px-1.5 py-0.5 text-xs rounded ${
+              activeTab === 'received'
+                ? 'bg-green-700 text-white'
+                : 'bg-green-500/30 text-green-400'
+            }`}>
+              {claimableReceived.length} claimable
+            </span>
+          )}
+          {confirmingReceived.length > 0 && (
+            <span className={`ml-2 px-1.5 py-0.5 text-xs rounded ${
+              activeTab === 'received'
+                ? 'bg-orange-700 text-white'
+                : 'bg-orange-500/30 text-orange-400'
+            }`}>
+              {confirmingReceived.length} confirming
             </span>
           )}
         </button>
@@ -224,7 +281,9 @@ export default function TipsPage() {
             sentTips.map((tip) => (
               <div
                 key={tip.id}
-                className="bg-zinc-900 rounded-xl p-4 flex items-center justify-between"
+                className={`bg-zinc-900 rounded-xl p-4 flex items-center justify-between ${
+                  tip.status === 'pending' && !tip.is_claimable ? 'border border-dashed border-zinc-700' : ''
+                }`}
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
@@ -232,6 +291,13 @@ export default function TipsPage() {
                       {formatAmount(tip.amount, tip.asset)}
                     </span>
                     <StatusBadge status={tip.status} />
+                    {tip.status === 'pending' && (
+                      <ConfirmationBadge
+                        confirmations={tip.funding_confirmations}
+                        required={tip.confirmations_required}
+                        isClaimable={tip.is_claimable}
+                      />
+                    )}
                   </div>
                   <p className="text-sm text-zinc-500">
                     To{' '}
@@ -281,40 +347,58 @@ export default function TipsPage() {
               </p>
             </div>
           ) : (
-            receivedTips.map((tip) => (
-              <div
-                key={tip.id}
-                className="bg-zinc-900 rounded-xl p-4 flex items-center justify-between"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className={`font-mono font-medium ${tip.status === 'claimed' ? 'text-green-400' : 'text-white'}`}>
-                      +{formatAmount(tip.amount, tip.asset)}
-                    </span>
-                    <StatusBadge status={tip.status} />
-                  </div>
-                  <p className="text-sm text-zinc-500">
-                    {tip.recipient_platform && (
-                      <span className="text-zinc-400">
-                        Via {tip.recipient_platform}
-                      </span>
-                    )}
-                    <span className="text-zinc-600 ml-2">
-                      {formatDate(tip.created_at)}
-                    </span>
-                  </p>
-                </div>
+            receivedTips.map((tip) => {
+              const canClaim = tip.status === 'pending' && tip.is_claimable && claimableTipIds.has(tip.id);
+              const isConfirming = tip.status === 'pending' && !tip.is_claimable && tip.confirmations_required > 0;
 
-                {tip.status === 'pending' && claimableTipIds.has(tip.id) && hasExtension && (
-                  <button
-                    onClick={() => handleOpenExtension('claim', tip.id)}
-                    className="px-4 py-1.5 text-sm bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708] transition-colors"
-                  >
-                    Claim
-                  </button>
-                )}
-              </div>
-            ))
+              return (
+                <div
+                  key={tip.id}
+                  className={`bg-zinc-900 rounded-xl p-4 flex items-center justify-between ${
+                    isConfirming ? 'border border-dashed border-zinc-700' : ''
+                  }`}
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className={`font-mono font-medium ${tip.status === 'claimed' ? 'text-green-400' : 'text-white'}`}>
+                        +{formatAmount(tip.amount, tip.asset)}
+                      </span>
+                      <StatusBadge status={tip.status} />
+                      {tip.status === 'pending' && (
+                        <ConfirmationBadge
+                          confirmations={tip.funding_confirmations}
+                          required={tip.confirmations_required}
+                          isClaimable={tip.is_claimable}
+                        />
+                      )}
+                    </div>
+                    <p className="text-sm text-zinc-500">
+                      {tip.recipient_platform && (
+                        <span className="text-zinc-400">
+                          Via {tip.recipient_platform}
+                        </span>
+                      )}
+                      <span className="text-zinc-600 ml-2">
+                        {formatDate(tip.created_at)}
+                      </span>
+                    </p>
+                  </div>
+
+                  {canClaim && hasExtension ? (
+                    <button
+                      onClick={() => handleOpenExtension('claim', tip.id)}
+                      className="px-4 py-1.5 text-sm bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708] transition-colors"
+                    >
+                      Claim
+                    </button>
+                  ) : isConfirming ? (
+                    <span className="px-4 py-1.5 text-sm text-orange-400 font-medium">
+                      Confirming...
+                    </span>
+                  ) : null}
+                </div>
+              );
+            })
           )}
         </div>
       )}
