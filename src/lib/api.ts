@@ -154,6 +154,8 @@ export interface PublicTipInfo {
   status: string;
   created_at: string;
   is_public: boolean;
+  funding_confirmations: number;
+  confirmations_required: number;
 }
 
 export async function getPublicTipInfo(tipId: string): Promise<PublicTipInfo> {

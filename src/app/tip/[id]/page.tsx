@@ -29,6 +29,10 @@ export default function TipPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasExtension, setHasExtension] = useState<boolean | null>(null);
+  const [fragmentKey, setFragmentKey] = useState<string | null>(null);
+  const [claiming, setClaiming] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
+  const [claimSuccess, setClaimSuccess] = useState<{ txid: string } | null>(null);
 
   useEffect(() => {
     // Check for extension
@@ -36,6 +40,14 @@ export default function TipPage() {
     check();
     const timeout = setTimeout(check, 500);
     return () => clearTimeout(timeout);
+  }, []);
+
+  // Extract fragment key from URL
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.length > 1) {
+      setFragmentKey(hash.slice(1)); // Remove the # prefix
+    }
   }, []);
 
   useEffect(() => {
@@ -56,6 +68,44 @@ export default function TipPage() {
 
     loadTip();
   }, [tipId]);
+
+  const handleClaim = async () => {
+    if (!window.smirk || !fragmentKey || !tipId) return;
+
+    setClaiming(true);
+    setClaimError(null);
+
+    try {
+      // First connect to extension (if not already)
+      await window.smirk.connect();
+
+      // Claim the tip
+      const result = await window.smirk.claimPublicTip(tipId, fragmentKey);
+
+      if (result.success && result.txid) {
+        setClaimSuccess({ txid: result.txid });
+        // Refresh tip info to show claimed status
+        const tipInfo = await getPublicTipInfo(tipId);
+        setTip(tipInfo);
+      } else {
+        setClaimError(result.error || 'Failed to claim tip');
+      }
+    } catch (err) {
+      setClaimError(err instanceof Error ? err.message : 'Failed to claim tip');
+    } finally {
+      setClaiming(false);
+    }
+  };
+
+  const isClaimable = tip?.status === 'pending' &&
+    tip.is_public &&
+    fragmentKey &&
+    (tip.funding_confirmations ?? 0) >= (tip.confirmations_required ?? 0);
+
+  const needsConfirmations = tip?.status === 'pending' &&
+    tip.is_public &&
+    fragmentKey &&
+    (tip.funding_confirmations ?? 0) < (tip.confirmations_required ?? 0);
 
   const coin = tip ? COINS[tip.asset.toLowerCase()] : null;
 
@@ -150,8 +200,79 @@ export default function TipPage() {
             </div>
           </div>
 
-          {/* Claim instructions */}
-          {tip.status === 'pending' && (
+          {/* Claim success */}
+          {claimSuccess && (
+            <div className="bg-green-500/10 border border-green-500/50 rounded-xl p-4">
+              <h3 className="text-green-400 font-semibold mb-2">Claimed!</h3>
+              <p className="text-zinc-400 text-sm">
+                Funds are being sent to your wallet.
+              </p>
+              <p className="text-zinc-500 text-xs mt-2 font-mono break-all">
+                TX: {claimSuccess.txid}
+              </p>
+            </div>
+          )}
+
+          {/* Needs confirmations */}
+          {needsConfirmations && !claimSuccess && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-[#fbeb0a]">Waiting for Confirmations</h2>
+              <div className="text-zinc-400 text-sm">
+                <p>This tip is still confirming on the blockchain.</p>
+                <p className="mt-2">
+                  <span className="text-[#fbeb0a] font-semibold">{tip?.funding_confirmations ?? 0}</span>
+                  {' / '}
+                  <span>{tip?.confirmations_required ?? 0}</span>
+                  {' confirmations'}
+                </p>
+                <p className="mt-3 text-zinc-500 text-xs">
+                  Refresh this page to check progress.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Claim button for public tips */}
+          {isClaimable && !claimSuccess && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold">
+                {hasExtension ? 'Ready to Claim!' : 'Install Smirk Wallet'}
+              </h2>
+
+              {hasExtension ? (
+                <div className="space-y-4">
+                  <button
+                    onClick={handleClaim}
+                    disabled={claiming}
+                    className="px-8 py-4 bg-[#fbeb0a] text-black font-bold rounded-xl
+                               hover:bg-[#d4c708] transition-colors disabled:opacity-50
+                               disabled:cursor-not-allowed text-lg w-full"
+                  >
+                    {claiming ? 'Claiming...' : 'Claim This Tip'}
+                  </button>
+                  {claimError && (
+                    <p className="text-red-400 text-sm">{claimError}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="text-zinc-400 text-sm space-y-4">
+                  <p>You need the Smirk Wallet extension to claim tips.</p>
+                  <a
+                    href="https://chrome.google.com/webstore/detail/smirk-wallet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-3 bg-[#fbeb0a] text-black font-bold rounded-xl
+                               hover:bg-[#d4c708] transition-colors"
+                  >
+                    Install Smirk Wallet
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Targeted tip instructions (no fragment key) */}
+          {tip.status === 'pending' && !fragmentKey && !tip.is_public && (
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">
                 {hasExtension ? 'Claim This Tip' : 'Install Smirk Wallet'}

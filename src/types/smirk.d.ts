@@ -19,6 +19,12 @@ interface SmirkSignResult {
   signatures: SmirkSignature[];
 }
 
+interface SmirkClaimResult {
+  success: boolean;
+  txid?: string;
+  error?: string;
+}
+
 interface SmirkAPI {
   isSmirk: boolean;
   connect(): Promise<SmirkPublicKeys>;
@@ -26,6 +32,7 @@ interface SmirkAPI {
   isConnected(): Promise<boolean>;
   getPublicKeys(): Promise<SmirkPublicKeys | null>;
   signMessage(message: string): Promise<SmirkSignResult>;
+  claimPublicTip(tipId: string, fragmentKey: string): Promise<SmirkClaimResult>;
 }
 
 interface Window {
