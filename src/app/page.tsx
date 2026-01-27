@@ -151,7 +151,8 @@ export default function Home() {
           />
         </div>
         <p className="creepster-text text-2xl mt-4">smirk.ca$h</p>
-        {userCount !== null && userCount > 0 && (
+        {/* Only show user count before logging in */}
+        {!user && userCount !== null && userCount > 0 && (
           <p className="text-zinc-500 text-sm mt-4">
             <span className="text-[#fbeb0a] font-semibold">{userCount.toLocaleString()}</span>{' '}
             {userCount === 1 ? 'smirker' : 'smirkers'} and counting

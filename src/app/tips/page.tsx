@@ -93,6 +93,7 @@ export default function TipsPage() {
   const [error, setError] = useState<string | null>(null);
   const [hasExtension, setHasExtension] = useState(false);
   const [activeTab, setActiveTab] = useState<'sent' | 'received'>('sent');
+  const [showInstructions, setShowInstructions] = useState<'claim' | 'clawback' | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('smirk_token') : null;
 
@@ -137,13 +138,8 @@ export default function TipsPage() {
   }, [token]);
 
   const handleOpenExtension = (action: 'claim' | 'clawback', tipId?: string) => {
-    // The extension doesn't have a direct deep-link API yet
-    // For now, just show instructions
-    if (action === 'claim') {
-      alert('Open Smirk extension → Inbox → Claim the pending tip');
-    } else {
-      alert('Open Smirk extension → Settings → Pending Tips → Clawback');
-    }
+    // Show in-page instructions instead of an alert
+    setShowInstructions(action);
   };
 
   if (loading) {
@@ -196,6 +192,86 @@ export default function TipsPage() {
       {error && (
         <div className="mb-6 p-4 bg-red-900/20 border border-red-500/50 rounded-lg">
           <p className="text-red-400 text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Instructions modal for opening extension */}
+      {showInstructions && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 rounded-xl p-6 max-w-md w-full border border-zinc-700 relative">
+            <button
+              onClick={() => setShowInstructions(null)}
+              className="absolute top-4 right-4 text-zinc-500 hover:text-white text-2xl leading-none"
+            >
+              &times;
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-[#fbeb0a] rounded-full flex items-center justify-center">
+                <Image src="/logo.svg" alt="Smirk" width={32} height={32} />
+              </div>
+              <h3 className="text-lg font-bold">
+                {showInstructions === 'claim' ? 'Claim Your Tip' : 'Clawback Tip'}
+              </h3>
+            </div>
+
+            {showInstructions === 'claim' ? (
+              <div className="space-y-4">
+                <p className="text-zinc-400 text-sm">
+                  To claim this tip, open your Smirk extension:
+                </p>
+                <ol className="text-sm space-y-3">
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                    <span className="text-zinc-300">Click the <strong className="text-[#fbeb0a]">puzzle piece icon</strong> in your browser toolbar</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                    <span className="text-zinc-300">Click <strong className="text-[#fbeb0a]">Smirk Wallet</strong></span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                    <span className="text-zinc-300">Go to <strong className="text-[#fbeb0a]">Inbox</strong></span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">4</span>
+                    <span className="text-zinc-300">Click <strong className="text-[#fbeb0a]">Claim</strong> on the pending tip</span>
+                  </li>
+                </ol>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-zinc-400 text-sm">
+                  To clawback an unclaimed tip:
+                </p>
+                <ol className="text-sm space-y-3">
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                    <span className="text-zinc-300">Open <strong className="text-[#fbeb0a]">Smirk Wallet</strong> extension</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                    <span className="text-zinc-300">Go to <strong className="text-[#fbeb0a]">Settings</strong></span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                    <span className="text-zinc-300">Find <strong className="text-[#fbeb0a]">Pending Tips</strong></span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center text-xs font-bold shrink-0">4</span>
+                    <span className="text-zinc-300">Click <strong className="text-[#fbeb0a]">Clawback</strong></span>
+                  </li>
+                </ol>
+              </div>
+            )}
+
+            <button
+              onClick={() => setShowInstructions(null)}
+              className="mt-6 w-full py-3 bg-[#fbeb0a] text-black font-bold rounded-lg hover:bg-[#d4c708] transition-colors"
+            >
+              Got it
+            </button>
+          </div>
         </div>
       )}
 
