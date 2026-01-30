@@ -312,12 +312,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Footer */}
-      <div className="fixed bottom-4 left-0 right-0 flex justify-center">
-        <Link href="/privacy" className="text-zinc-500 text-sm hover:text-[#fbeb0a] transition-colors">
-          Privacy Policy
-        </Link>
-      </div>
     </div>
   );
 }

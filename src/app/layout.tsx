@@ -19,8 +19,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistMono.variable} font-mono antialiased`}>
-        {children}
+      <body className={`${geistMono.variable} font-mono antialiased min-h-screen flex flex-col`}>
+        <main className="flex-1">{children}</main>
+        <footer className="py-4 text-center text-xs text-zinc-500 flex items-center justify-center gap-3">
+          <a href="/privacy" className="hover:text-[#fbeb0a] transition-colors">
+            Privacy Policy
+          </a>
+          <span className="text-zinc-700">•</span>
+          <span>
+            Made &amp; Hosted by{" "}
+            <a
+              href="https://such.software"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-[#fbeb0a] transition-colors"
+            >
+              such.software
+            </a>
+          </span>
+        </footer>
       </body>
     </html>
   );
