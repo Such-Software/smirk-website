@@ -295,6 +295,49 @@ export async function getClaimableTips(token: string): Promise<{ tips: Claimable
 }
 
 // =============================================================================
+// Discord OAuth2 Linking
+// =============================================================================
+
+export interface DiscordAuthUrlResponse {
+  auth_url: string;
+}
+
+export async function getDiscordAuthUrl(token: string): Promise<DiscordAuthUrlResponse> {
+  const res = await fetch(`${API_URL}/api/v1/socials/discord/auth-url`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to get Discord auth URL');
+  }
+
+  return res.json();
+}
+
+export async function completeDiscordOAuth(
+  token: string,
+  code: string,
+  state: string
+): Promise<LinkedSocial> {
+  const res = await fetch(`${API_URL}/api/v1/socials/discord/callback`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ code, state }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to link Discord account');
+  }
+
+  return res.json();
+}
+
+// =============================================================================
 // Username Management
 // =============================================================================
 
