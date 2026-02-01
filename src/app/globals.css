@@ -91,3 +91,17 @@ body {
     0 0 20px rgba(251, 235, 10, 0.4),
     0 0 30px rgba(251, 235, 10, 0.2);
 }
+
+/* Hide scrollbar when content fits viewport on tall screens */
+@media (min-height: 700px) {
+  html {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  /* Hide scrollbar but keep scrolling functional */
+  html::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+}

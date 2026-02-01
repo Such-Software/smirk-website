@@ -153,10 +153,13 @@ export default function Home() {
         <p className="creepster-text text-2xl mt-4">smirk.ca$h</p>
         {/* Only show user count before logging in */}
         {!user && userCount !== null && userCount > 0 && (
-          <p className="text-zinc-500 text-sm mt-4">
+          <Link
+            href="/stats"
+            className="text-zinc-500 text-sm mt-4 block hover:text-zinc-400 transition-colors"
+          >
             <span className="text-[#fbeb0a] font-semibold">{userCount.toLocaleString()}</span>{' '}
             {userCount === 1 ? 'smirker' : 'smirkers'} and counting
-          </p>
+          </Link>
         )}
       </div>
 

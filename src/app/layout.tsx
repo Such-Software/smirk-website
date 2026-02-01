@@ -21,7 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistMono.variable} font-mono antialiased min-h-screen flex flex-col`}>
         <main className="flex-1">{children}</main>
-        <footer className="py-4 text-center text-xs text-zinc-500 flex items-center justify-center gap-3">
+        <footer className="py-4 text-center text-xs text-zinc-500 flex items-center justify-center gap-3 flex-wrap">
+          <a href="/stats" className="hover:text-[#fbeb0a] transition-colors">
+            Stats
+          </a>
+          <span className="text-zinc-700">•</span>
           <a href="/privacy" className="hover:text-[#fbeb0a] transition-colors">
             Privacy Policy
           </a>

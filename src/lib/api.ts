@@ -406,3 +406,24 @@ export async function getUserCount(): Promise<UserCountResponse> {
 
   return res.json();
 }
+
+// =============================================================================
+// Public Stats
+// =============================================================================
+
+export interface PublicStats {
+  total_users: number;
+  users_by_preferred_asset: Record<string, number>;
+  linked_accounts_by_platform: Record<string, number>;
+  total_tips_sent: number;
+}
+
+export async function getPublicStats(): Promise<PublicStats> {
+  const res = await fetch(`${API_URL}/api/v1/stats/public`);
+
+  if (!res.ok) {
+    throw new Error('Failed to get stats');
+  }
+
+  return res.json();
+}
