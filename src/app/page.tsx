@@ -137,7 +137,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
+    <div className="flex-1 flex flex-col items-center justify-center p-8">
       {/* Logo */}
       <div className="mb-12 flex flex-col items-center">
         <h1 className="creepster-text text-4xl mb-4">SMIRK WALLET</h1>
