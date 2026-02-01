@@ -6,10 +6,9 @@
 - [ ] Display user UUID
 - [ ] Auto-refresh balances
 
-## Phase 3: Additional Platforms
+## Future: Additional Platforms
 
-- [ ] Discord linking flow
-- [ ] Signal / Matrix / Simplex (future)
+- [ ] Signal / Matrix / Simplex (when backend supports)
 
 ## Lower Priority
 
@@ -21,6 +20,13 @@
 
 ## Completed
 
+- [x] **Public Stats Page** (2026-02-01)
+  - /stats page showing platform metrics
+  - Clickable user count on homepage
+  - Stats link in footer
+- [x] **Discord OAuth2 Linking** (2026-02-01)
+  - Discord OAuth2 flow in settings
+  - Unlink functionality
 - [x] **Tips Page** (2026-01-27)
   - Sent/received tabs with confirmation status
   - Polling for confirmation updates

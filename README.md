@@ -9,7 +9,7 @@ This website serves as a hub for Smirk wallet users to:
 - See tipping history (sent and received)
 - **Register & verify social platform usernames** (Telegram, Discord)
 - **Manage social tips** - view sent/received, clawback unclaimed
-- Future: Chat/messaging between users, direct tipping, etc.
+- **Public stats** - platform growth metrics at /stats
 
 **Important**: This site is ONLY accessible to users with the Smirk extension installed. Authentication happens via cryptographic signatures from the user's wallet keys.
 
