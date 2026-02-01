@@ -26,6 +26,10 @@ export default function RootLayout({
             Privacy Policy
           </a>
           <span className="text-zinc-700">•</span>
+          <a href="/terms" className="hover:text-[#fbeb0a] transition-colors">
+            Terms of Service
+          </a>
+          <span className="text-zinc-700">•</span>
           <span>
             Made &amp; Hosted by{" "}
             <a

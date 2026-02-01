@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
   getMe,
   getLinkedSocials,
-  registerSocial,
+  initiateLink,
   unlinkSocial,
   getMyUsername,
   setUsername,
@@ -14,7 +14,7 @@ import {
   type LinkedSocial,
 } from '@/lib/api';
 
-type LinkStep = 'idle' | 'entering' | 'verifying';
+type LinkStep = 'idle' | 'linking' | 'waiting';
 
 export default function SettingsPage() {
   const [user, setUser] = useState<MeResponse | null>(null);
@@ -31,10 +31,9 @@ export default function SettingsPage() {
 
   // Telegram linking state
   const [linkStep, setLinkStep] = useState<LinkStep>('idle');
-  const [telegramUsername, setTelegramUsername] = useState('');
-  const [verificationCode, setVerificationCode] = useState<string | null>(null);
-  const [botLink, setBotLink] = useState<string | null>(null);
+  const [deepLink, setDeepLink] = useState<string | null>(null);
   const [linkError, setLinkError] = useState<string | null>(null);
+  const [polling, setPolling] = useState(false);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('smirk_token') : null;
 
@@ -81,24 +80,50 @@ export default function SettingsPage() {
     }
   };
 
-  const handleStartLink = () => {
-    setLinkStep('entering');
+  const handleStartLink = async () => {
+    if (!token) return;
+    setLinkStep('linking');
     setLinkError(null);
-  };
 
-  const handleSubmitUsername = async () => {
-    if (!token || !telegramUsername.trim()) return;
-
-    setLinkError(null);
     try {
-      const result = await registerSocial(token, 'telegram', telegramUsername.trim());
-      setVerificationCode(result.verification_code);
-      setBotLink(result.bot_link);
-      setLinkStep('verifying');
+      const result = await initiateLink(token, 'telegram');
+      setDeepLink(result.deep_link);
+      setLinkStep('waiting');
+      // Start polling for verification
+      startPolling();
     } catch (err) {
-      setLinkError(err instanceof Error ? err.message : 'Failed to start verification');
+      setLinkError(err instanceof Error ? err.message : 'Failed to initiate link');
+      setLinkStep('idle');
     }
   };
+
+  const startPolling = () => {
+    if (polling) return;
+    setPolling(true);
+  };
+
+  // Polling effect for verification status
+  useEffect(() => {
+    if (!polling || !token) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const socialsData = await getLinkedSocials(token);
+        setSocials(socialsData.socials);
+        const telegram = socialsData.socials.find((s) => s.platform === 'telegram');
+        if (telegram?.verified) {
+          // Success! Stop polling and reset state
+          setPolling(false);
+          setLinkStep('idle');
+          setDeepLink(null);
+        }
+      } catch {
+        // Ignore polling errors, keep trying
+      }
+    }, 3000); // Poll every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [polling, token]);
 
   const handleUnlink = async (platform: string) => {
     if (!token) return;
@@ -114,27 +139,9 @@ export default function SettingsPage() {
 
   const handleCancelLink = () => {
     setLinkStep('idle');
-    setTelegramUsername('');
-    setVerificationCode(null);
-    setBotLink(null);
+    setDeepLink(null);
     setLinkError(null);
-  };
-
-  const handleVerificationDone = async () => {
-    if (!token) return;
-    // Refresh socials to check if verified
-    try {
-      const socialsData = await getLinkedSocials(token);
-      setSocials(socialsData.socials);
-      const telegram = socialsData.socials.find((s) => s.platform === 'telegram');
-      if (telegram?.verified) {
-        handleCancelLink();
-      } else {
-        setLinkError('Verification not complete. Send the code to the bot and try again.');
-      }
-    } catch {
-      setLinkError('Failed to check verification status');
-    }
+    setPolling(false);
   };
 
   if (loading) {
@@ -271,9 +278,11 @@ export default function SettingsPage() {
               <div>
                 <p className="font-medium">Telegram</p>
                 {telegramSocial?.verified ? (
-                  <p className="text-sm text-green-400">@{telegramSocial.username}</p>
+                  <p className="text-sm text-green-400">
+                    {telegramSocial.username ? `@${telegramSocial.username}` : telegramSocial.display_name || 'Linked'}
+                  </p>
                 ) : telegramSocial?.pending_verification ? (
-                  <p className="text-sm text-yellow-400">Pending: @{telegramSocial.username}</p>
+                  <p className="text-sm text-yellow-400">Verification pending</p>
                 ) : (
                   <p className="text-sm text-zinc-500">Not linked</p>
                 )}
@@ -298,68 +307,33 @@ export default function SettingsPage() {
           </div>
 
           {/* Link flow UI */}
-          {linkStep === 'entering' && (
+          {linkStep === 'linking' && (
             <div className="mt-4 pt-4 border-t border-zinc-800">
-              <label className="block text-sm text-zinc-400 mb-2">
-                Enter your Telegram username
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={telegramUsername}
-                  onChange={(e) => setTelegramUsername(e.target.value)}
-                  placeholder="@username"
-                  className="flex-1 px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#fbeb0a]"
-                />
-                <button
-                  onClick={handleSubmitUsername}
-                  disabled={!telegramUsername.trim()}
-                  className="px-4 py-2 bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708] disabled:opacity-50"
-                >
-                  Next
-                </button>
-                <button
-                  onClick={handleCancelLink}
-                  className="px-4 py-2 border border-zinc-700 rounded-lg hover:border-zinc-500"
-                >
-                  Cancel
-                </button>
+              <div className="flex items-center gap-2">
+                <div className="animate-spin w-5 h-5 border-2 border-[#fbeb0a] border-t-transparent rounded-full" />
+                <span className="text-zinc-400">Setting up link...</span>
               </div>
-              {linkError && <p className="mt-2 text-sm text-red-400">{linkError}</p>}
             </div>
           )}
 
-          {linkStep === 'verifying' && verificationCode && (
+          {linkStep === 'waiting' && deepLink && (
             <div className="mt-4 pt-4 border-t border-zinc-800">
-              <div className="bg-zinc-800 rounded-lg p-4 mb-4">
-                <p className="text-sm text-zinc-400 mb-2">Your verification code:</p>
-                <p className="text-2xl font-mono font-bold text-[#fbeb0a]">{verificationCode}</p>
-              </div>
+              <p className="text-sm text-zinc-400 mb-4">
+                Click the button below to open Telegram and link your account automatically:
+              </p>
 
-              <ol className="text-sm text-zinc-400 space-y-2 mb-4">
-                <li>
-                  1. Open{' '}
-                  <a
-                    href={botLink || 'https://t.me/smirk_wallet_bot'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#0088cc] hover:underline"
-                  >
-                    @smirk_wallet_bot
-                  </a>{' '}
-                  on Telegram
-                </li>
-                <li>2. Send: <code className="bg-zinc-700 px-2 py-0.5 rounded">/verify {verificationCode}</code></li>
-                <li>3. Click &quot;I&apos;ve verified&quot; below</li>
-              </ol>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={handleVerificationDone}
-                  className="px-4 py-2 bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708]"
+              <div className="flex gap-2 mb-4">
+                <a
+                  href={deepLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#0088cc] text-white font-medium rounded-lg hover:bg-[#0077b3]"
                 >
-                  I&apos;ve verified
-                </button>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                  </svg>
+                  Open Telegram
+                </a>
                 <button
                   onClick={handleCancelLink}
                   className="px-4 py-2 border border-zinc-700 rounded-lg hover:border-zinc-500"
@@ -367,6 +341,12 @@ export default function SettingsPage() {
                   Cancel
                 </button>
               </div>
+
+              <div className="flex items-center gap-2 text-sm text-zinc-500">
+                <div className="animate-spin w-4 h-4 border-2 border-zinc-500 border-t-transparent rounded-full" />
+                <span>Waiting for verification...</span>
+              </div>
+
               {linkError && <p className="mt-2 text-sm text-red-400">{linkError}</p>}
             </div>
           )}

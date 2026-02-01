@@ -87,10 +87,18 @@ export interface RegisterSocialResponse {
 
 export interface LinkedSocial {
   platform: string;
-  username: string;
+  username: string | null;
+  display_name: string | null;
+  platform_user_id: string | null;
   verified: boolean;
   verified_at: string | null;
   pending_verification: boolean;
+}
+
+export interface InitiateLinkResponse {
+  deep_link: string;
+  code: string;
+  expires_at: string;
 }
 
 export interface LinkedSocialsResponse {
@@ -114,6 +122,33 @@ export async function registerSocial(
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
     throw new Error(data.error || 'Failed to start verification');
+  }
+
+  return res.json();
+}
+
+/**
+ * Initiate social link via deep link flow.
+ *
+ * Returns a deep link that opens the bot. User clicks the link,
+ * bot extracts their info automatically, no manual username entry.
+ */
+export async function initiateLink(
+  token: string,
+  platform: string
+): Promise<InitiateLinkResponse> {
+  const res = await fetch(`${API_URL}/api/v1/socials/initiate-link`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ platform }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to initiate link');
   }
 
   return res.json();
