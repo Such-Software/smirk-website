@@ -8,11 +8,11 @@ import { getPublicStats, type PublicStats } from '@/lib/api';
 // Asset display names and colors
 const ASSETS: Record<string, { name: string; color: string }> = {
   btc: { name: 'Bitcoin', color: '#f7931a' },
-  ltc: { name: 'Litecoin', color: '#bfbbbb' },
-  xmr: { name: 'Monero', color: '#ff6600' },
+  ltc: { name: 'Litecoin', color: '#c0c0c0' },
+  xmr: { name: 'Monero', color: '#6b7280' },
   wow: { name: 'Wownero', color: '#ff69b4' },
   grin: { name: 'Grin', color: '#ffc107' },
-  unknown: { name: 'Unknown', color: '#6b7280' },
+  unknown: { name: 'Unknown', color: '#374151' },
 };
 
 // Platform display names
@@ -78,36 +78,43 @@ export default function StatsPage() {
       </div>
 
       {/* Users by Preferred Coin */}
-      <div className="bg-zinc-900 rounded-xl p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Favorite Login Coin</h2>
-        <div className="space-y-3">
-          {Object.entries(stats?.users_by_preferred_asset || {})
-            .sort(([, a], [, b]) => b - a)
-            .map(([asset, count]) => {
-              const info = ASSETS[asset] || ASSETS.unknown;
-              const percentage = totalByAsset > 0 ? (count / totalByAsset) * 100 : 0;
-              return (
-                <div key={asset}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>{info.name}</span>
-                    <span className="text-zinc-400">
-                      {count} ({percentage.toFixed(1)}%)
-                    </span>
+      {Object.keys(stats?.users_by_preferred_asset || {}).length > 0 && (
+        <div className="bg-zinc-900 rounded-xl p-6 mb-6">
+          <h2 className="text-lg font-semibold mb-4">Favorite Login Coin</h2>
+          <div className="space-y-4">
+            {Object.entries(stats?.users_by_preferred_asset || {})
+              .sort(([, a], [, b]) => b - a)
+              .map(([asset, count]) => {
+                const info = ASSETS[asset] || ASSETS.unknown;
+                const percentage = totalByAsset > 0 ? (count / totalByAsset) * 100 : 0;
+                return (
+                  <div key={asset} className="group">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="font-medium" style={{ color: info.color }}>
+                        {info.name}
+                      </span>
+                      <span className="text-zinc-500 group-hover:text-zinc-300 transition-colors">
+                        {count.toLocaleString()} logins ({percentage.toFixed(1)}%)
+                      </span>
+                    </div>
+                    <div className="h-4 bg-zinc-800 rounded-lg overflow-hidden">
+                      <div
+                        className="h-full rounded-lg transition-all duration-500 group-hover:brightness-110"
+                        style={{
+                          width: `${Math.max(percentage, 2)}%`,
+                          backgroundColor: info.color,
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: `${percentage}%`,
-                        backgroundColor: info.color,
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
+          <p className="text-xs text-zinc-600 mt-4 text-center">
+            Based on {totalByAsset.toLocaleString()} total logins
+          </p>
         </div>
-      </div>
+      )}
 
       {/* Linked Accounts */}
       {Object.keys(stats?.linked_accounts_by_platform || {}).length > 0 && (
