@@ -202,7 +202,7 @@ export default function Home() {
               <p className="creepster-text text-xl text-[#fbeb0a]">GET SMIRKED</p>
               <div className="flex gap-4">
                 <a
-                  href="https://chrome.google.com/webstore/detail/smirk-wallet"
+                  href="https://chromewebstore.google.com/detail/smirk-wallet/mbohhckapcchfmanheggbkekofhajnci"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg

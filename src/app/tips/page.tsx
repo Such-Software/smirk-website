@@ -280,7 +280,7 @@ export default function TipsPage() {
           <p className="text-yellow-400 text-sm">
             Install the{' '}
             <a
-              href="https://chromewebstore.google.com/detail/smirk/placeholder"
+              href="https://chromewebstore.google.com/detail/smirk-wallet/mbohhckapcchfmanheggbkekofhajnci"
               target="_blank"
               rel="noopener noreferrer"
               className="underline"

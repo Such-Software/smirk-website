@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# repo-to-text
+.repo-to-text-settings.yaml
+repo-to-text_*.txt

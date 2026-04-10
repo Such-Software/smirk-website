@@ -7,9 +7,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://smirk.cash";
+
 export const metadata: Metadata = {
-  title: "Smirk Wallet",
-  description: "Sign in with your Smirk wallet",
+  title: {
+    default: "Smirk Wallet",
+    template: "%s | Smirk Wallet",
+  },
+  description:
+    "Multi-coin crypto wallet browser extension. Send, receive, and tip BTC, LTC, XMR, WOW, and GRIN.",
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Smirk Wallet",
+    description:
+      "Multi-coin crypto wallet browser extension. Send, receive, and tip BTC, LTC, XMR, WOW, and GRIN.",
+    url: siteUrl,
+    siteName: "Smirk Wallet",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Smirk Wallet",
+    description:
+      "Multi-coin crypto wallet browser extension. Send, receive, and tip BTC, LTC, XMR, WOW, and GRIN.",
+  },
+  icons: {
+    icon: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
