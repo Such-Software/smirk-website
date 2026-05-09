@@ -30,12 +30,38 @@ export default function TipPageClient({ tipId }: { tipId: string }) {
   const [claimError, setClaimError] = useState<string | null>(null);
   const [claimSuccess, setClaimSuccess] = useState<{ txid: string } | null>(null);
 
+  // Detect extension. See `app/page.tsx` for rationale — module-script
+  // injection is deferred, so we layer a sync check + smirk-ready
+  // event + 3s polling fallback.
   useEffect(() => {
-    // Check for extension
-    const check = () => setHasExtension(!!window.smirk);
-    check();
-    const timeout = setTimeout(check, 500);
-    return () => clearTimeout(timeout);
+    let cancelled = false;
+    const found = () => {
+      if (!cancelled && window.smirk) {
+        setHasExtension(true);
+        return true;
+      }
+      return false;
+    };
+
+    if (found()) return;
+
+    const onReady = () => found();
+    window.addEventListener('smirk-ready', onReady);
+
+    const poll = setInterval(() => {
+      if (found()) clearInterval(poll);
+    }, 100);
+    const giveUp = setTimeout(() => {
+      clearInterval(poll);
+      if (!cancelled && !window.smirk) setHasExtension(false);
+    }, 3000);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('smirk-ready', onReady);
+      clearInterval(poll);
+      clearTimeout(giveUp);
+    };
   }, []);
 
   // Extract fragment key from URL

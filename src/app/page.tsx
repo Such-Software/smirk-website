@@ -26,13 +26,52 @@ export default function Home() {
   const [checkingSession, setCheckingSession] = useState(true);
   const [userCount, setUserCount] = useState<number | null>(null);
 
-  // Check for extension on mount
+  // Check for extension on mount.
+  //
+  // The Smirk extension injects via `<script type="module">`, which
+  // the browser DEFERS until after DOMContentLoaded — so a single
+  // immediate-or-500ms check could race past the injection on a busy
+  // Next.js page (the cause of an old "Connect" stays-greyed-out
+  // bug). Three layers cover all timings:
+  //
+  //   1. Immediate sync check (fast path: extension already there).
+  //   2. Listen for the `smirk-ready` CustomEvent (extension v0.2.5+).
+  //   3. Polling fallback up to ~3s, for older extensions + any
+  //      future browser quirk. Cheap; stops as soon as found.
   useEffect(() => {
-    const check = () => setHasExtension(!!window.smirk);
-    // Check immediately and after a delay (extension might inject late)
-    check();
-    const timeout = setTimeout(check, 500);
-    return () => clearTimeout(timeout);
+    let cancelled = false;
+    const found = () => {
+      if (!cancelled && window.smirk) {
+        setHasExtension(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Layer 1: immediate.
+    if (found()) return;
+
+    // Layer 2: event from the extension (v0.2.5+).
+    const onReady = () => found();
+    window.addEventListener('smirk-ready', onReady);
+
+    // Layer 3: polling fallback (100ms intervals up to 3s).
+    const poll = setInterval(() => {
+      if (found()) clearInterval(poll);
+    }, 100);
+
+    // Final timeout: definitively mark as missing if still not seen.
+    const giveUp = setTimeout(() => {
+      clearInterval(poll);
+      if (!cancelled && !window.smirk) setHasExtension(false);
+    }, 3000);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('smirk-ready', onReady);
+      clearInterval(poll);
+      clearTimeout(giveUp);
+    };
   }, []);
 
   // Fetch user count on mount
