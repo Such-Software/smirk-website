@@ -54,19 +54,19 @@ export default function Privacy() {
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">A. Monero &amp; Wownero Private View Keys</h3>
           <p className="text-zinc-400 mb-3">
-            To provide a fast mobile and extension experience without requiring you to download
-            the entire blockchain, Smirk collects and stores your Private View Keys for Monero (XMR)
-            and Wownero (WOW).
+            To provide a fast mobile and browser-extension experience without requiring you
+            to download the entire blockchain, Smirk collects and stores your Private View
+            Keys for Monero (XMR) and Wownero (WOW).
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
             <li>
               <strong className="text-white">Purpose:</strong> These keys allow our Light Wallet Server (LWS)
-              to scan the blockchain on your behalf to identify incoming tips.
+              to scan the blockchain on your behalf to identify incoming tips and update your balance.
             </li>
             <li>
               <strong className="text-white">Limitation:</strong> A View Key cannot be used to spend your funds.
               It only allows the server to see that a transaction has occurred. Your funds remain secure
-              and spendable only by your local extension.
+              and spendable only by your local Smirk wallet (browser extension or mobile app).
             </li>
           </ul>
 
@@ -83,6 +83,56 @@ export default function Privacy() {
           <ul className="space-y-2 text-zinc-400 ml-4">
             <li><strong className="text-white">Encrypted Payloads:</strong> The ciphertext of the tip (which we cannot read).</li>
             <li><strong className="text-white">Status &amp; Timestamps:</strong> Metadata regarding when a tip was created or claimed.</li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">D. Bitcoin &amp; Litecoin Public Addresses</h3>
+          <p className="text-zinc-400 mb-3">
+            To show your BTC and LTC balances and broadcast your transactions, our backend
+            forwards your <strong>public</strong> wallet addresses to mainstream blockchain
+            indexers (e.g. mempool.space for Bitcoin, litecoinspace.org for Litecoin).
+            These are the same indexers most non-custodial wallets use.
+          </p>
+          <ul className="space-y-2 text-zinc-400 ml-4">
+            <li><strong className="text-white">What is shared:</strong> only public address strings and signed transaction bytes — never seed phrases or private keys.</li>
+            <li><strong className="text-white">What we store:</strong> nothing additional on our side beyond what is already in your wallet&apos;s local view.</li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">E. Wallet Fingerprint</h3>
+          <p className="text-zinc-400 mb-3">
+            On first login your wallet derives a one-way <strong>fingerprint</strong>
+            (SHA-256 of your seed) and sends it to our backend as a stable, anonymous
+            identifier. It is used to associate your wallet with social handles and tip
+            history across devices, and is the value our backend joins on internally.
+            It is <strong>not reversible</strong> back to your seed and cannot be used
+            to spend your funds.
+          </p>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">F. Optional Dapp Connections (<code>window.smirk</code>)</h3>
+          <p className="text-zinc-400 mb-3">
+            Smirk exposes a <code>window.smirk</code> API to web pages so dapps like
+            smirk.cash, claim pages, and merchant sites can request a connection or a
+            signature from your wallet. Connections are per-origin and require an
+            explicit approval prompt the first time a site asks; you can revoke any
+            origin at any time from Settings. You can also globally disable the
+            <code>window.smirk</code> surface from Settings — when off, pages cannot
+            detect that Smirk is installed.
+          </p>
+          <ul className="space-y-2 text-zinc-400 ml-4">
+            <li><strong className="text-white">What gets shared:</strong> only the public material you approve (asset public keys, addresses) plus the signatures you explicitly authorize per request.</li>
+            <li><strong className="text-white">What we do not share:</strong> seed phrases, private spend keys, balances of un-authorized assets, history of other origins.</li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">G. Optional Crypto Swaps</h3>
+          <p className="text-zinc-400 mb-3">
+            Smirk offers in-wallet crypto swaps (e.g. BTC ↔ XMR) via third-party
+            aggregators such as <strong>Trocador</strong>. We do not operate an
+            exchange ourselves. When you choose to swap, the wallet queries the
+            third-party aggregator for quotes and routes the trade through them.
+          </p>
+          <ul className="space-y-2 text-zinc-400 ml-4">
+            <li><strong className="text-white">What gets shared with the aggregator:</strong> the asset pair, amount, and destination public address — exactly what the aggregator needs to fulfill the trade.</li>
+            <li><strong className="text-white">Subject to the aggregator&apos;s own privacy policy:</strong> we are a passthrough at trade time. Trocador&apos;s policy lives at <a className="text-[#fbeb0a] hover:underline" href="https://trocador.app/privacy" target="_blank" rel="noopener noreferrer">trocador.app/privacy</a>.</li>
+            <li><strong className="text-white">Opt-in:</strong> no swap data leaves your device until you tap to request a quote.</li>
           </ul>
         </section>
 
@@ -120,8 +170,12 @@ export default function Privacy() {
           <ul className="space-y-2 text-zinc-400">
             <li><strong className="text-[#fbeb0a]">Non-Custodial:</strong> We never see your private spend keys. Your money is yours.</li>
             <li><strong className="text-[#fbeb0a]">View Keys:</strong> We collect Monero/Wownero view keys to scan for your tips so you don&apos;t have to sync the whole blockchain.</li>
+            <li><strong className="text-[#fbeb0a]">Public Addresses:</strong> Your BTC/LTC public addresses are forwarded to mainstream blockchain indexers — the same ones every non-custodial wallet uses. Nothing private.</li>
+            <li><strong className="text-[#fbeb0a]">Fingerprint:</strong> A one-way SHA-256 of your seed is sent to identify your wallet — not reversible, cannot move funds.</li>
             <li><strong className="text-[#fbeb0a]">Encrypted:</strong> All tip payloads are encrypted on your device.</li>
             <li><strong className="text-[#fbeb0a]">Identity:</strong> We only store your Social ID to help people find your public key.</li>
+            <li><strong className="text-[#fbeb0a]">Dapps:</strong> The <code>window.smirk</code> API is opt-in per origin, revocable per origin, and can be turned off globally in Settings.</li>
+            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional, opt-in, routed through third-party aggregators (e.g. Trocador). We never operate an exchange.</li>
           </ul>
         </section>
 
