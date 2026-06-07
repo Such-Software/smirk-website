@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SmirkBridgeBootstrap } from "./SmirkBridgeBootstrap";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -46,6 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistMono.variable} font-mono antialiased min-h-screen flex flex-col`}>
+        <SmirkBridgeBootstrap />
         <main className="flex-1 flex flex-col">{children}</main>
         <footer className="py-4 text-center text-xs text-zinc-500 flex items-center justify-center gap-3 flex-wrap">
           <a href="/stats" className="hover:text-[#fbeb0a] transition-colors">
