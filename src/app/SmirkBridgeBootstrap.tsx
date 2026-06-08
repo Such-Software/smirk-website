@@ -12,7 +12,7 @@
  */
 
 import { useEffect } from 'react';
-import { installSmirkPageApi } from '@/lib/smirk-iframe-bridge';
+import { installSmirkPageApi } from '@such-software/smirk-dapp-api';
 
 export function SmirkBridgeBootstrap(): null {
   useEffect(() => {
