@@ -23,246 +23,466 @@ export default function Terms() {
       {/* Content */}
       <div className="max-w-2xl w-full bg-zinc-900/50 rounded-2xl p-8 space-y-8">
         <p className="text-zinc-400 text-sm">
-          Last Updated: January 31, 2026
+          Effective July 2, 2026.
         </p>
 
-        <p className="text-zinc-300 text-lg leading-relaxed">
-          BY ACCESSING OR USING SMIRK WALLET, YOU AGREE TO BE BOUND BY THESE TERMS OF SERVICE.
-          IF YOU DO NOT AGREE, DO NOT USE OUR SERVICES.
-        </p>
+        {/* The short version */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">The short version</h2>
+          <p className="text-zinc-300 leading-relaxed">
+            Smirk is non-custodial wallet software published by Such Software LLC.
+            You hold your own keys; we never take custody of your coins and cannot
+            recover them for you. Some features route you to independent third
+            parties (Trocador for swaps) that have their own terms. Crypto is risky
+            and largely irreversible. The software is provided &quot;as is.&quot; These are
+            the details.
+          </p>
+        </section>
 
         {/* Section 1 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">1. Eligibility</h2>
-          <p className="text-zinc-300 mb-4">
-            You represent and warrant that you:
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">1. Who we are and acceptance of these Terms</h2>
+          <p className="text-zinc-400 mb-4">
+            These Terms of Service (&quot;Terms&quot;) are a binding agreement between you
+            (&quot;you&quot;) and <strong className="text-white">Such Software LLC</strong>, a
+            single-member limited liability company organized under the laws of the
+            Commonwealth of Pennsylvania, United States (&quot;Such Software,&quot; &quot;we,&quot; &quot;us,&quot;
+            or &quot;our&quot;). They govern your access to and use of the Smirk browser
+            extension, desktop application, the source code, this website
+            (smirk.cash), and any related software and services (together, the
+            &quot;Software&quot;).
           </p>
-          <ul className="space-y-2 text-zinc-400 ml-4 list-disc list-inside">
-            <li>Are of legal age to form a binding contract in your jurisdiction</li>
-            <li>Have not previously been suspended or removed from using our Services</li>
-            <li>Have full power and authority to enter into this agreement</li>
-            <li>Will not use these services in violation of any applicable laws</li>
-          </ul>
+          <p className="text-zinc-400">
+            By downloading, installing, accessing, or using the Software, you agree
+            to these Terms and to our{' '}
+            <Link href="/privacy" className="text-[#fbeb0a] hover:underline">
+              Privacy Policy
+            </Link>
+            . If you do not agree, do not use the Software.
+          </p>
         </section>
 
         {/* Section 2 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">2. Account &amp; Wallet Security</h2>
-          <p className="text-zinc-300 mb-4">
-            When you create a Smirk wallet, you agree to:
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">2. Eligibility</h2>
+          <p className="text-zinc-400">
+            You may use the Software only if you are at least 18 years old (or the
+            age of majority in your jurisdiction, whichever is greater) and are able
+            to form a binding contract with us. By using the Software you represent
+            that you meet these requirements, that you have not previously been
+            suspended or removed from using the Software, and that your use complies
+            with all laws that apply to you.
           </p>
-          <ul className="space-y-3 text-zinc-400">
-            <li>
-              <strong className="text-white">Secure Your Recovery Phrase:</strong> You are solely
-              responsible for backing up and protecting your 24-word recovery phrase (mnemonic).
-              This phrase is the only way to recover your wallet.
-            </li>
-            <li>
-              <strong className="text-white">Password Protection:</strong> Maintain the security
-              of your wallet password and restrict access to your devices.
-            </li>
-            <li>
-              <strong className="text-white">Promptly Report Issues:</strong> Notify us if you
-              discover or suspect any security breaches related to your account.
-            </li>
-            <li>
-              <strong className="text-white">Accept Responsibility:</strong> Take responsibility
-              for all activities that occur under your wallet, including any authorized or
-              unauthorized access.
-            </li>
-          </ul>
         </section>
 
         {/* Section 3 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">3. Description of Services</h2>
-
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">3.1 Non-Custodial Wallet</h3>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">3. The Software is non-custodial</h2>
           <p className="text-zinc-400 mb-4">
-            Smirk is a <strong className="text-white">non-custodial</strong> multi-cryptocurrency
-            wallet supporting Bitcoin (BTC), Litecoin (LTC), Monero (XMR), Wownero (WOW), and
-            Grin (GRIN). Your private spend keys are generated and stored locally on your device.
-            They are never transmitted to our servers. We cannot access, freeze, or seize your funds.
+            Smirk is a <strong className="text-white">non-custodial</strong>{' '}
+            multi-cryptocurrency wallet supporting Bitcoin (BTC), Litecoin (LTC),
+            Monero (XMR), Wownero (WOW), and Grin (GRIN). Your seed phrase and
+            private spend keys are generated and stored locally on your device and
+            remain under your sole control. They are never transmitted to our
+            servers. Cryptocurrencies exist on their respective blockchains, not
+            inside the Software; any transfer of value happens on a decentralized
+            network, not with us. We cannot access, freeze, or seize your funds.
           </p>
-
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">3.2 Social Tipping</h3>
           <p className="text-zinc-400 mb-4">
-            Smirk enables you to send cryptocurrency tips to users on social platforms (Telegram,
-            Discord, etc.) and via public tip links. Tips are encrypted and can only be claimed
-            by the intended recipient (or anyone with the link for public tips).
-          </p>
-
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">3.3 No Recovery Phrase Retrieval</h3>
-          <p className="text-zinc-400 mb-4">
-            Our Services do not store your recovery phrase or unencrypted private keys. Therefore,
-            we cannot assist you with recovery phrase retrieval.
+            <strong className="text-white">We cannot recover your funds, seed
+            phrase, keys, or password under any circumstances.</strong> If you lose
+            your seed phrase, or if it is stolen or shared, your funds may be
+            permanently and irretrievably lost, and we will be unable to help. You
+            are solely responsible for securely backing up your seed phrase and for
+            the security of your devices.
           </p>
           <div className="bg-zinc-800/50 rounded-xl p-4 text-zinc-300">
-            <strong className="text-[#fbeb0a]">WARNING:</strong> IF YOU LOSE YOUR RECOVERY PHRASE,
-            YOU WILL PERMANENTLY LOSE ACCESS TO YOUR FUNDS. THERE IS NO WAY TO RECOVER THEM.
+            <strong className="text-[#fbeb0a]">WARNING:</strong> IF YOU LOSE YOUR
+            RECOVERY PHRASE, YOU WILL PERMANENTLY LOSE ACCESS TO YOUR FUNDS. THERE IS
+            NO WAY TO RECOVER THEM.
           </div>
-
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">3.4 Transaction Processing</h3>
-          <p className="text-zinc-400 mb-4">
-            All cryptocurrency transactions are processed by their respective decentralized
-            networks (Bitcoin, Litecoin, Monero, Wownero, Grin). We do not control these networks
-            and cannot guarantee transaction speed, confirmation, or reversal. Once a transaction
-            is broadcast, it cannot be cancelled or modified.
+          <p className="text-zinc-400 mt-4">
+            Such Software is not a bank, custodian, money services business, money
+            transmitter, broker, dealer, exchange, or investment adviser, and it
+            does not provide investment, financial, legal, accounting, or tax
+            advice. The Software is a tool you operate yourself. All cryptocurrency
+            transactions are processed by their respective decentralized networks; we
+            do not control those networks and cannot guarantee transaction speed,
+            confirmation, or reversal. Once a transaction is broadcast, it cannot be
+            cancelled or modified.
           </p>
         </section>
 
         {/* Section 4 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Fees</h2>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Your responsibilities</h2>
           <ul className="space-y-3 text-zinc-400">
             <li>
-              <strong className="text-white">Service Fees:</strong> Access to Smirk wallet is
-              currently free. We may introduce fees for certain services in the future.
+              <strong className="text-white">Keys and backups.</strong> Record your
+              seed phrase and keep it private and secure. Never share your seed
+              phrase or private keys with anyone, including us — we will never ask
+              for them.
             </li>
             <li>
-              <strong className="text-white">Network Fees:</strong> All cryptocurrency transactions
-              require network fees (miner fees) paid to the respective blockchain network. These
-              fees are not collected by Smirk and are displayed before you confirm any transaction.
+              <strong className="text-white">Accuracy.</strong> Blockchain
+              transactions are generally irreversible. You are responsible for
+              verifying recipient addresses, networks, and amounts before you send.
+              Funds sent to the wrong address or network cannot be recovered.
+            </li>
+            <li>
+              <strong className="text-white">Security.</strong> Maintain the security
+              of your wallet password and devices, and promptly notify us if you
+              discover or suspect a security issue affecting the Software.
+            </li>
+            <li>
+              <strong className="text-white">Compliance and taxes.</strong> You are
+              responsible for complying with the laws that apply to you and for
+              determining, reporting, and paying any taxes that arise from your
+              activity. Such Software is not responsible for determining, collecting,
+              reporting, or remitting any taxes arising from your use of the Software.
             </li>
           </ul>
         </section>
 
         {/* Section 5 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">5. Acceptable Use</h2>
-          <p className="text-zinc-300 mb-4">You agree that you will NOT:</p>
-          <ul className="space-y-2 text-zinc-400 ml-4 list-disc list-inside">
-            <li>Use our Services to engage in illegal activities including fraud, money laundering,
-              or terrorist financing</li>
-            <li>Attempt to interfere with, disrupt, or overburden our Services</li>
-            <li>Use automated means (bots, scrapers) to access our Services without permission</li>
-            <li>Attempt to circumvent any security measures or access controls</li>
-            <li>Introduce viruses, malware, or other harmful code</li>
-            <li>Impersonate others or provide false information</li>
-            <li>Use our Services to harass, abuse, or harm others</li>
-          </ul>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">5. Restricted persons and locations (sanctions)</h2>
+          <p className="text-zinc-400">
+            You represent and warrant that you are not, and are not acting on behalf
+            of, a person who is: (a) located in, ordinarily resident in, or organized
+            under the laws of any jurisdiction subject to comprehensive United States
+            sanctions (currently including Cuba, Iran, North Korea, Syria, and the
+            Crimea, Donetsk, and Luhansk regions of Ukraine); or (b) listed on any
+            sanctions or restricted-party list maintained by the U.S. government
+            (including the U.S. Treasury Department&apos;s Office of Foreign Assets
+            Control (OFAC) Specially Designated Nationals and Blocked Persons List and
+            the U.S. Commerce Department&apos;s Entity List), the United Nations, the
+            European Union or its member states, or the United Kingdom. You agree not
+            to use the Software if applicable law prohibits you from doing so.
+          </p>
         </section>
 
         {/* Section 6 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">6. Taxes</h2>
-          <p className="text-zinc-400">
-            It is your sole responsibility to determine what taxes apply to your cryptocurrency
-            transactions and to report and remit the correct tax to the appropriate tax authority.
-            Smirk is not responsible for determining, collecting, reporting, or remitting any
-            taxes arising from your use of our Services.
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">6. Acceptable use</h2>
+          <p className="text-zinc-300 mb-4">You agree not to use the Software:</p>
+          <ul className="space-y-2 text-zinc-400 ml-4 list-disc list-inside">
+            <li>for money laundering, terrorist financing, fraud, or any other
+              illegal activity, or to evade sanctions;</li>
+            <li>on behalf of any person barred under Section 5;</li>
+            <li>to interfere with, disrupt, overburden, attack, or circumvent the
+              security of the Software or any network it connects to;</li>
+            <li>to access the Software by automated means (bots, scrapers) without
+              our permission, or to introduce viruses, malware, or other harmful
+              code;</li>
+            <li>to infringe others&apos; rights, impersonate others, provide false
+              information, or harass, abuse, or harm others.</li>
+          </ul>
+          <p className="text-zinc-400 mt-4">
+            We may suspend, restrict, or terminate your access to the Software (or to
+            particular features) if we reasonably believe you have violated these
+            Terms or applicable law. Because the Software is non-custodial, ending
+            your license does not affect your ability to access your funds with your
+            seed phrase in other compatible wallet software.
           </p>
         </section>
 
         {/* Section 7 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">7. Assumption of Risk</h2>
-          <p className="text-zinc-300 mb-4">
-            You acknowledge and agree that there are risks associated with using cryptocurrency
-            and Internet-based services, including but not limited to:
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">7. Third-party services</h2>
+          <p className="text-zinc-400 mb-4">
+            The Software lets you connect to independent third parties. Those services
+            are operated by others, not by us. When you use one, you may be subject to
+            and required to accept that provider&apos;s own terms and privacy policy, and
+            you may be entering into a separate contract directly with that provider.
+            We are not a party to those transactions, do not control those providers,
+            and are not responsible for their acts, omissions, pricing, availability,
+            verification decisions, or performance. See our{' '}
+            <Link href="/privacy" className="text-[#fbeb0a] hover:underline">
+              Privacy Policy
+            </Link>{' '}
+            for what data flows where.
           </p>
-          <ul className="space-y-2 text-zinc-400 ml-4 list-disc list-inside">
-            <li>Price volatility and potential loss of value</li>
-            <li>Risk of hardware, software, and Internet connection failures</li>
-            <li>Risk of malicious software or phishing attacks</li>
-            <li>Risk of unauthorized access to your devices or accounts</li>
-            <li>Irreversibility of cryptocurrency transactions</li>
-            <li>Regulatory changes that may affect cryptocurrency use</li>
-          </ul>
-          <p className="text-zinc-400 mt-4">
-            Smirk is not responsible for any losses arising from forgotten recovery phrases,
-            incorrect addresses, server failures, phishing attacks, or any other unauthorized
-            third-party activities.
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">7.1 Swaps (Trocador)</h3>
+          <p className="text-zinc-400 mb-4">
+            In-wallet swaps between coins are executed by{' '}
+            <strong className="text-white">Trocador</strong>, a third-party
+            non-custodial exchange aggregator, and the underlying exchange providers
+            it routes to — not by Such Software. When you start a swap, order details
+            (input and output coin, amount, and your receiving and refund addresses)
+            are sent to Trocador&apos;s API. Such Software does not exchange your assets,
+            does not take custody of funds during a swap, and is not the counterparty
+            to your trade. Your use of Trocador is governed by Trocador&apos;s terms and{' '}
+            <a
+              href="https://trocador.app/en/privacypolicy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#fbeb0a] hover:underline"
+            >
+              privacy policy
+            </a>
+            .
+          </p>
+          <p className="text-zinc-400">
+            <strong className="text-white">Swap fee.</strong> Such Software receives a
+            referral commission (currently around 1% of the swap amount) from Trocador
+            for swaps initiated in the Software. This commission is already reflected
+            in the exchange rate shown to you before you confirm a swap; there is no
+            separate charge. Because the fee is a referral commission paid by Trocador
+            and we are never in custody of or in the settlement path for the swapped
+            funds, we act as a referrer, not as a money transmitter or exchanger.
           </p>
         </section>
 
         {/* Section 8 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">8. Discontinuance of Services</h2>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">8. Connecting to sites (window.smirk)</h2>
           <p className="text-zinc-400">
-            We may, in our sole discretion and without liability to you, modify or discontinue
-            any portion of our Services at any time. You are solely responsible for maintaining
-            a backup of your recovery phrase outside of the Services. If you have your recovery
-            phrase, you can always access your funds using any compatible wallet software, even
-            if Smirk discontinues its Services.
+            The Software exposes a <code>window.smirk</code> interface so that web
+            pages — such as smirk.cash, claim pages, and merchant sites — can request
+            a connection to your wallet or ask you to approve a signature. Connections
+            are per-origin and require an explicit approval prompt the first time a
+            site asks; you can revoke any origin, or disable the interface entirely,
+            from Settings. Third-party sites are operated by others, are not part of
+            the Software, and are not endorsed by us. You interact with them at your
+            own risk and are responsible for what you connect to and what you approve.
           </p>
         </section>
 
         {/* Section 9 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">9. Disclaimer of Warranties</h2>
-          <p className="text-zinc-400 uppercase text-sm leading-relaxed">
-            OUR SERVICES ARE PROVIDED ON AN &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; BASIS.
-            TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
-            INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-            NON-INFRINGEMENT. WE DO NOT WARRANT THAT OUR SERVICES WILL BE UNINTERRUPTED,
-            ERROR-FREE, OR SECURE.
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">9. Nodes, servers, and other endpoints</h2>
+          <p className="text-zinc-400">
+            To read balances and broadcast transactions, the Software connects to
+            blockchain nodes, indexers, and — for Monero and Wownero — a light-wallet
+            server operated by Such Software. You may use the default endpoints
+            shipped with the Software or, where supported, configure your own. Node
+            and endpoint operators see the information your interaction with them
+            entails. Network (miner/validator) fees are charged by the relevant
+            blockchain, not by us, and are displayed before you confirm a transaction.
+            Fees, spreads, and limits for third-party services (such as Trocador) are
+            set by those providers. What data goes where is described in our{' '}
+            <Link href="/privacy" className="text-[#fbeb0a] hover:underline">
+              Privacy Policy
+            </Link>
+            .
           </p>
         </section>
 
         {/* Section 10 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">10. Limitation of Liability</h2>
-          <p className="text-zinc-400 uppercase text-sm leading-relaxed">
-            TO THE MAXIMUM EXTENT PERMITTED BY LAW, SMIRK AND ITS DIRECTORS, EMPLOYEES, AND
-            AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL,
-            OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, OR FUNDS,
-            ARISING FROM YOUR USE OF OR INABILITY TO USE OUR SERVICES.
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">10. Assumption of risk</h2>
+          <p className="text-zinc-300 mb-4">
+            You understand and accept the risks of cryptocurrencies and blockchain
+            technology, including:
           </p>
-          <p className="text-zinc-400 uppercase text-sm leading-relaxed mt-4">
-            IN NO EVENT SHALL OUR AGGREGATE LIABILITY EXCEED ONE HUNDRED DOLLARS ($100 USD).
+          <ul className="space-y-2 text-zinc-400 ml-4 list-disc list-inside">
+            <li>extreme price volatility and potential loss of value;</li>
+            <li>the irreversibility of on-chain transactions and losses from sending
+              to a wrong address or network;</li>
+            <li>bugs or vulnerabilities in protocols, smart contracts, or
+              cryptographic libraries; forks and network changes;</li>
+            <li>regulatory changes that may affect cryptocurrency use;</li>
+            <li>hardware, software, Internet-connection, or third-party service
+              failures, and phishing or malware attacks.</li>
+          </ul>
+          <p className="text-zinc-400 mt-4">
+            You agree that Such Software is not responsible for losses arising from
+            these risks, including losses from forgotten recovery phrases, incorrect
+            addresses, endpoint or server failures, phishing, or unauthorized
+            third-party activity.
           </p>
         </section>
 
         {/* Section 11 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">11. Indemnification</h2>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">11. Intellectual property and open source</h2>
           <p className="text-zinc-400">
-            You agree to defend, indemnify, and hold harmless Smirk and its officers, directors,
-            employees, and agents from any claims, damages, losses, or expenses arising from:
-            (a) your use of our Services; (b) your violation of these Terms; (c) your violation
-            of any rights of any third party; or (d) any content you submit through our Services.
+            Smirk&apos;s own application code is open source, licensed under the MIT
+            License (Copyright 2026 Such Software LLC). The Software also incorporates
+            third-party open-source components under their own licenses, including the
+            Monero and Wownero wallet cores and the Grin/Mimblewimble libraries. The
+            applicable license texts are available in the Software&apos;s source
+            repository. To the extent any names, branding, or logos — including
+            &quot;Smirk&quot; and &quot;Such Software LLC&quot; — are not covered by those open-source
+            licenses, they remain the exclusive property of Such Software LLC, and
+            nothing here grants you a license to use them.
           </p>
         </section>
 
         {/* Section 12 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">12. Privacy</h2>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">12. Discontinuance of Services</h2>
           <p className="text-zinc-400">
-            Please refer to our{' '}
-            <Link href="/privacy" className="text-[#fbeb0a] hover:underline">
-              Privacy Policy
-            </Link>
-            {' '}for information about how we collect, use, and protect your information.
+            We may, in our sole discretion and without liability to you, modify or
+            discontinue any portion of the Software at any time. You are solely
+            responsible for maintaining a backup of your recovery phrase outside of
+            the Software. If you have your recovery phrase, you can always access your
+            funds using any compatible wallet software, even if Smirk discontinues its
+            Services.
           </p>
         </section>
 
         {/* Section 13 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">13. Modifications to Terms</h2>
-          <p className="text-zinc-400">
-            We reserve the right to modify these Terms at any time. We will provide notice of
-            material changes by updating the &quot;Last Updated&quot; date at the top of these Terms.
-            Your continued use of our Services after any changes constitutes your acceptance of
-            the new Terms.
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">13. Disclaimer of warranties</h2>
+          <p className="text-zinc-400 uppercase text-sm leading-relaxed">
+            THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE,&quot; WITH ALL FAULTS AND
+            WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, SUCH
+            SOFTWARE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING THE
+            IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+            TITLE, AND NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SOFTWARE WILL BE
+            UNINTERRUPTED, TIMELY, SECURE, ERROR-FREE, OR THAT ANY DATA (INCLUDING
+            RATES OR BALANCES) IS ACCURATE.
           </p>
         </section>
 
         {/* Section 14 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">14. Governing Law</h2>
-          <p className="text-zinc-400">
-            These Terms shall be governed by and construed in accordance with the laws of the
-            jurisdiction where Smirk operates, without regard to conflict of law principles.
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">14. Limitation of liability</h2>
+          <p className="text-zinc-400 uppercase text-sm leading-relaxed">
+            TO THE MAXIMUM EXTENT PERMITTED BY LAW, SUCH SOFTWARE AND ITS MEMBERS,
+            MANAGERS, EMPLOYEES, AND AGENTS WILL NOT BE LIABLE FOR ANY INDIRECT,
+            INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR ANY
+            LOSS OF PROFITS, REVENUE, DATA, OR CRYPTOCURRENCY, ARISING FROM OR RELATED
+            TO YOUR USE OF (OR INABILITY TO USE) THE SOFTWARE, EVEN IF ADVISED OF THE
+            POSSIBILITY.
+          </p>
+          <p className="text-zinc-400 uppercase text-sm leading-relaxed mt-4">
+            TO THE MAXIMUM EXTENT PERMITTED BY LAW, OUR TOTAL AGGREGATE LIABILITY FOR
+            ALL CLAIMS RELATING TO THE SOFTWARE WILL NOT EXCEED ONE HUNDRED U.S.
+            DOLLARS (US$100).
+          </p>
+          <p className="text-zinc-400 text-sm leading-relaxed mt-4">
+            Some jurisdictions do not allow certain exclusions or limitations, so some
+            of the above may not apply to you; in that case our liability is limited to
+            the greatest extent permitted by law.
           </p>
         </section>
 
         {/* Section 15 */}
         <section>
-          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">15. Severability</h2>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">15. Indemnification</h2>
           <p className="text-zinc-400">
-            If any provision of these Terms is found to be invalid or unenforceable, the remaining
-            provisions shall remain in full force and effect.
+            You agree to indemnify and hold harmless Such Software and its members,
+            managers, employees, and agents from any claims, losses, liabilities, and
+            expenses (including reasonable legal fees) arising from your use of the
+            Software, your violation of these Terms or applicable law (including
+            sanctions, AML, or tax obligations), or your infringement of any third
+            party&apos;s rights.
+          </p>
+        </section>
+
+        {/* Section 16 */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">16. Apple App Store and Google Play</h2>
+          <p className="text-zinc-400">
+            If you obtained the Software from the Apple App Store, the following
+            additional terms apply. These Terms are between you and Such Software only,
+            not with Apple, and Apple is not responsible for the Software or its
+            content. Apple has no obligation to provide maintenance or support for the
+            Software. In the event of any failure of the Software to conform to any
+            applicable warranty, you may notify Apple, and Apple will refund the
+            purchase price (if any); to the maximum extent permitted by law, Apple has
+            no other warranty obligation with respect to the Software. Such Software,
+            not Apple, is responsible for addressing any claims relating to the
+            Software, including product-liability, legal-compliance, and
+            intellectual-property claims. You represent that you are not located in a
+            country subject to a U.S. Government embargo or designated as a
+            &quot;terrorist supporting&quot; country and that you are not on any U.S. Government
+            list of prohibited or restricted parties. Apple and its subsidiaries are
+            third-party beneficiaries of these Terms and may enforce them against you.
+            If you obtained the Software from Google Play, your use is also subject to
+            the Google Play Terms of Service.
+          </p>
+        </section>
+
+        {/* Section 17 */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">17. Governing law and disputes</h2>
+          <p className="text-zinc-400 mb-4">
+            These Terms are governed by the laws of the Commonwealth of Pennsylvania,
+            without regard to its conflict-of-laws rules.
+          </p>
+          <p className="text-zinc-400 mb-4">
+            <strong className="text-white">Courts.</strong> Except as provided below,
+            any dispute arising out of or relating to these Terms or the Software will
+            be brought exclusively in the state or federal courts located in or serving
+            Chester County, Pennsylvania, and you consent to the personal jurisdiction
+            and venue of those courts. Either party may bring an individual claim in
+            small-claims court, and either party may seek injunctive or equitable
+            relief in any court of competent jurisdiction to protect its intellectual
+            property or security.
+          </p>
+          <p className="text-zinc-400 mb-4">
+            <strong className="text-white">Jury-trial and class-action waiver.</strong>{' '}
+            To the maximum extent permitted by law, you and Such Software each waive any
+            right to a jury trial and agree that disputes will be brought only on an
+            individual basis, and not as a plaintiff or class member in any class,
+            collective, or representative proceeding.
+          </p>
+          <p className="text-zinc-400 mb-4">
+            <strong className="text-white">Optional arbitration.</strong> At our
+            option, we may elect to resolve a given dispute through final and binding
+            individual arbitration administered by the American Arbitration Association
+            under its rules, applying Pennsylvania law. This does not change the
+            individual-basis and jury/class-waiver terms above.
+          </p>
+          <p className="text-zinc-400 mb-4">
+            <strong className="text-white">30-day opt-out.</strong> You may opt out of
+            the class-action waiver and the optional-arbitration provision by emailing{' '}
+            <a href="mailto:support@such.software" className="text-[#fbeb0a] hover:underline">
+              support@such.software
+            </a>{' '}
+            with the subject line &quot;Legal Opt-Out&quot; within 30 days of first accepting
+            these Terms. Opting out will not affect any other part of these Terms.
+          </p>
+          <p className="text-zinc-400 mb-4">
+            <strong className="text-white">Time limit.</strong> Any claim relating to
+            the Software must be brought within one (1) year after it arises, or it is
+            permanently barred, except where a longer period is required by law.
+          </p>
+          <p className="text-zinc-400">
+            Nothing in these Terms limits any mandatory consumer-protection rights you
+            have under the law of your country of residence that cannot be waived by
+            agreement.
+          </p>
+        </section>
+
+        {/* Section 18 */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">18. Changes to these Terms</h2>
+          <p className="text-zinc-400">
+            We may update these Terms from time to time. When we do, we will revise the
+            effective date above and post the updated Terms here; material changes may
+            also be noted in the app&apos;s release notes or via{' '}
+            <a
+              href="https://x.com/such_software"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#fbeb0a] hover:underline"
+            >
+              @such_software
+            </a>
+            . Your continued use of the Software after an update means you accept the
+            revised Terms.
+          </p>
+        </section>
+
+        {/* Section 19 */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">19. General</h2>
+          <p className="text-zinc-400">
+            If any provision of these Terms is held unenforceable, the rest remain in
+            effect and the unenforceable provision will be limited or removed to the
+            minimum extent necessary. These Terms (with the Privacy Policy) are the
+            entire agreement between you and Such Software regarding the Software and
+            supersede any prior agreements. You may not assign these Terms without our
+            consent; we may assign them to an affiliate or successor. Our failure to
+            enforce a provision is not a waiver. We are not liable for delays or
+            failures caused by events beyond our reasonable control. We may provide
+            notices to you through the Software or this website.
           </p>
         </section>
 
@@ -272,6 +492,7 @@ export default function Terms() {
           <ul className="space-y-2 text-zinc-400">
             <li><strong className="text-[#fbeb0a]">Non-Custodial:</strong> You control your keys. We cannot access or recover your funds.</li>
             <li><strong className="text-[#fbeb0a]">Your Responsibility:</strong> Back up your recovery phrase. Losing it means losing your funds forever.</li>
+            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Executed by Trocador, not us. We earn a ~1% referral commission that&apos;s already baked into the quoted rate.</li>
             <li><strong className="text-[#fbeb0a]">Irreversible:</strong> Cryptocurrency transactions cannot be cancelled or reversed.</li>
             <li><strong className="text-[#fbeb0a]">No Guarantees:</strong> We provide the service as-is. Use at your own risk.</li>
             <li><strong className="text-[#fbeb0a]">Be Legal:</strong> Don&apos;t use Smirk for illegal activities.</li>
@@ -282,8 +503,11 @@ export default function Terms() {
         <section className="bg-zinc-800/50 rounded-xl p-6">
           <h2 className="text-lg font-bold text-[#fbeb0a] mb-4">Questions?</h2>
           <p className="text-zinc-300">
-            If you have questions about these Terms of Service, please contact us through our
-            official channels or at the support email provided in the extension.
+            Questions about these Terms:{' '}
+            <a href="mailto:support@such.software" className="text-[#fbeb0a] hover:underline">
+              support@such.software
+            </a>
+            . Smirk is developed and maintained by Such Software LLC.
           </p>
         </section>
 

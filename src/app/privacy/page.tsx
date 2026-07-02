@@ -22,10 +22,23 @@ export default function Privacy() {
 
       {/* Content */}
       <div className="max-w-2xl w-full bg-zinc-900/50 rounded-2xl p-8 space-y-8">
+        <p className="text-zinc-400 text-sm">
+          Effective July 2, 2026.
+        </p>
+
         <p className="text-zinc-300 text-lg leading-relaxed">
           At Smirk, we believe privacy is a fundamental human right. Our architecture is designed
           so that we never have access to your private keys, unencrypted funds, or the ability
           to spend your money.
+        </p>
+
+        <p className="text-zinc-400">
+          Smirk is published by <strong className="text-white">Such Software LLC</strong>, a
+          single-member limited liability company organized under the laws of the Commonwealth
+          of Pennsylvania, United States (&quot;Such Software,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). This policy
+          explains what stays on your device, what our backend receives to power tipping and
+          balances, and which independent third parties see what. It applies to the Smirk browser
+          extension, desktop application, and this website (smirk.cash).
         </p>
 
         {/* Section 1 */}
@@ -130,8 +143,9 @@ export default function Privacy() {
             third-party aggregator for quotes and routes the trade through them.
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
-            <li><strong className="text-white">What gets shared with the aggregator:</strong> the asset pair, amount, and destination public address — exactly what the aggregator needs to fulfill the trade.</li>
-            <li><strong className="text-white">Subject to the aggregator&apos;s own privacy policy:</strong> we are a passthrough at trade time. Trocador&apos;s policy lives at <a className="text-[#fbeb0a] hover:underline" href="https://trocador.app/privacy" target="_blank" rel="noopener noreferrer">trocador.app/privacy</a>.</li>
+            <li><strong className="text-white">What gets shared with the aggregator:</strong> the asset pair, amount, and your destination and refund public addresses — exactly what the aggregator needs to fulfill the trade.</li>
+            <li><strong className="text-white">Subject to the aggregator&apos;s own privacy policy:</strong> we are a passthrough at trade time. Trocador&apos;s policy lives at <a className="text-[#fbeb0a] hover:underline" href="https://trocador.app/en/privacypolicy/" target="_blank" rel="noopener noreferrer">trocador.app/en/privacypolicy/</a>.</li>
+            <li><strong className="text-white">Referral commission:</strong> Such Software receives a referral commission (around 1% of the swap amount) from Trocador, already reflected in the quoted rate. We are never in custody of or in the settlement path for the swapped funds — see our <Link href="/terms" className="text-[#fbeb0a] hover:underline">Terms</Link> for details.</li>
             <li><strong className="text-white">Opt-in:</strong> no swap data leaves your device until you tap to request a quote.</li>
           </ul>
         </section>
@@ -175,8 +189,86 @@ export default function Privacy() {
             <li><strong className="text-[#fbeb0a]">Encrypted:</strong> All tip payloads are encrypted on your device.</li>
             <li><strong className="text-[#fbeb0a]">Identity:</strong> We only store your Social ID to help people find your public key.</li>
             <li><strong className="text-[#fbeb0a]">Dapps:</strong> The <code>window.smirk</code> API is opt-in per origin, revocable per origin, and can be turned off globally in Settings.</li>
-            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional, opt-in, routed through third-party aggregators (e.g. Trocador). We never operate an exchange.</li>
+            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional, opt-in, routed through third-party aggregators (e.g. Trocador). We never operate an exchange, but we do earn a ~1% referral commission that&apos;s baked into the quoted rate.</li>
           </ul>
+        </section>
+
+        {/* Third parties you choose to enable */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Third parties you choose to enable</h2>
+          <p className="text-zinc-400">
+            Some features connect you to independent third parties operated by others,
+            not by us — Trocador for swaps, the blockchain indexers noted above, and any
+            site you connect to through the <code>window.smirk</code> interface. Those
+            endpoints see whatever your interactions with them entail, and each has its
+            own privacy policy. We neither control nor monitor those connections, and we
+            are not responsible for how those parties handle your data.
+          </p>
+        </section>
+
+        {/* Children */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">5. Children</h2>
+          <p className="text-zinc-400">
+            Smirk is not directed to people under 18, and we do not knowingly collect
+            data from minors. If you believe a minor has used Smirk and you want to
+            delete any associated state, uninstalling the extension or app on the
+            relevant device removes all local data; contact us at the address below to
+            remove associated backend records.
+          </p>
+        </section>
+
+        {/* Your rights */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">6. Your rights</h2>
+          <p className="text-zinc-400 mb-3">
+            Your seed phrase and private spend keys never leave your device, and
+            uninstalling removes all local state. For the limited data our backend does
+            hold (Monero/Wownero view keys, your wallet fingerprint, linked social
+            handles, and encrypted tip metadata), residents of the EU/UK (GDPR Articles
+            15–22) and California (CCPA / CPRA) may request access to, correction of, or
+            deletion of that data by emailing{' '}
+            <a href="mailto:support@such.software" className="text-[#fbeb0a] hover:underline">
+              support@such.software
+            </a>
+            . We do not sell your data.
+          </p>
+          <p className="text-zinc-400">
+            For data held by third parties you&apos;ve used through Smirk (Trocador, node
+            operators, blockchain indexers), contact those providers directly using the
+            privacy contact in their respective policies.
+          </p>
+        </section>
+
+        {/* Changes */}
+        <section>
+          <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">7. Changes to this policy</h2>
+          <p className="text-zinc-400">
+            We&apos;ll post any update to this page with a new effective date. Material
+            changes will be announced via{' '}
+            <a
+              href="https://x.com/such_software"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#fbeb0a] hover:underline"
+            >
+              @such_software
+            </a>{' '}
+            and the app&apos;s release notes. Continued use of Smirk after a change indicates
+            acceptance of the revised policy.
+          </p>
+        </section>
+
+        {/* Contact */}
+        <section className="bg-zinc-800/50 rounded-xl p-6">
+          <h2 className="text-lg font-bold text-[#fbeb0a] mb-4">Contact</h2>
+          <p className="text-zinc-300">
+            Privacy questions:{' '}
+            <a href="mailto:support@such.software" className="text-[#fbeb0a] hover:underline">
+              support@such.software
+            </a>
+            . Smirk is developed and maintained by Such Software LLC.
+          </p>
         </section>
 
         {/* Back link */}
