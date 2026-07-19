@@ -45,7 +45,9 @@ interface SmirkClaimResult {
 
 interface SmirkPaymentRequest {
   asset: 'btc' | 'ltc' | 'xmr' | 'wow';
-  amount: string;   // Atomic-units string (avoid float)
+  amount: string;   // Human decimal amount in whole coins, e.g. "9" or "9.5". The
+                    // wallet converts to atomic units using the asset's decimals; do
+                    // NOT pre-compute atomic units yourself.
   address: string;
   memo?: string;
 }

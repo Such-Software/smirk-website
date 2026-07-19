@@ -33,7 +33,8 @@ export default function Terms() {
             Smirk is non-custodial wallet software published by Such Software LLC.
             You hold your own keys; we never take custody of your coins and cannot
             recover them for you. Some features route you to independent third
-            parties (Trocador for swaps) that have their own terms. Crypto is risky
+            parties (like Trocador for swaps) that have their own terms, and Smirk can
+            send end-to-end encrypted messages over the Nostr network. Crypto is risky
             and largely irreversible. The software is provided &quot;as is.&quot; These are
             the details.
           </p>
@@ -176,7 +177,10 @@ export default function Terms() {
               our permission, or to introduce viruses, malware, or other harmful
               code;</li>
             <li>to infringe others&apos; rights, impersonate others, provide false
-              information, or harass, abuse, or harm others.</li>
+              information, or harass, abuse, or harm others;</li>
+            <li>to create, store, send, request, or distribute content that is unlawful —
+              including child sexual abuse material (CSAM) or any content that sexually
+              exploits or endangers a minor, and content that infringes intellectual property.</li>
           </ul>
           <p className="text-zinc-400 mt-4">
             We may suspend, restrict, or terminate your access to the Software (or to
@@ -184,6 +188,44 @@ export default function Terms() {
             Terms or applicable law. Because the Software is non-custodial, ending
             your license does not affect your ability to access your funds with your
             seed phrase in other compatible wallet software.
+          </p>
+          <p className="text-zinc-400 mt-4">
+            <strong className="text-white">Usernames and identity.</strong> A Smirk username
+            (which backs your name@smirk.cash handle) is assigned on a first-come basis and
+            gives you no ownership of the name. You may not choose a username that impersonates
+            another person or project or that infringes a trademark, and we may refuse, reclaim,
+            or reassign usernames — including reserved names — to prevent impersonation or abuse.
+            Your Nostr keys are derived from your seed and remain yours regardless.
+          </p>
+          <p className="text-zinc-400 mt-4">
+            <strong className="text-white">Reporting unlawful content.</strong> We report child
+            sexual abuse material to the National Center for Missing &amp; Exploited Children
+            (NCMEC) and cooperate with law enforcement and valid legal process as required by
+            law. To report unlawful content or abuse, or to send a copyright or other legal
+            notice, contact{' '}
+            <a href="mailto:legal@such.software" className="text-[#fbeb0a] hover:underline">
+              legal@such.software
+            </a>
+            .
+          </p>
+          <p className="text-zinc-400 mt-4">
+            <strong className="text-white">Copyright (DMCA).</strong> Such Software LLC complies
+            with the Digital Millennium Copyright Act. If you believe content made available
+            through a service we operate infringes your copyright, send a notice containing the
+            elements required by 17 U.S.C. §&nbsp;512(c)(3) to our registered Designated Agent:
+          </p>
+          <p className="text-zinc-400 mt-2 ml-4">
+            Such Software LLC — DMCA Designated Agent<br />
+            [mailing address, as registered with the U.S. Copyright Office]<br />
+            <a href="mailto:legal@such.software" className="text-[#fbeb0a] hover:underline">
+              legal@such.software
+            </a>
+          </p>
+          <p className="text-zinc-400 mt-2">
+            We remove or disable access to material in response to valid notices and, in
+            appropriate circumstances, terminate repeat infringers. If you believe your content
+            was removed in error, you may submit a counter-notification under §&nbsp;512(g) to the
+            same contact.
           </p>
         </section>
 
@@ -233,6 +275,18 @@ export default function Terms() {
             and we are never in custody of or in the settlement path for the swapped
             funds, we act as a referrer, not as a money transmitter or exchanger.
           </p>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">7.2 Additional providers</h3>
+          <p className="text-zinc-400">
+            We may add other independent swap, exchange, or fiat on-ramp/off-ramp providers
+            (and, in the future, peer-to-peer swap functionality) within the Software. Each such
+            provider is operated by others, not by us, and your use of it is governed by that
+            provider&apos;s own terms and privacy policy. Some providers — particularly fiat
+            on-ramps — may require identity verification (KYC) and may decline service under
+            their own policies and applicable law; any such verification is between you and that
+            provider, and Such Software does not perform it or receive that verification data. We
+            are not the counterparty to, and take no custody in, those transactions.
+          </p>
         </section>
 
         {/* Section 8 */}
@@ -267,6 +321,27 @@ export default function Terms() {
               Privacy Policy
             </Link>
             .
+          </p>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">9.1 Messaging and the Nostr relay</h3>
+          <p className="text-zinc-400 mb-4">
+            Smirk supports optional end-to-end encrypted direct messages over the Nostr protocol.
+            Messages are encrypted on your device; relays carry only ciphertext. Such Software may
+            operate a Nostr relay that the Software can use, alongside independent public relays. A
+            relay we operate transmits and briefly stores encrypted messages so your devices can
+            retrieve them; we do not read, and cannot read, their contents.
+          </p>
+          <p className="text-zinc-400">
+            Because a relay is a shared service, we may <strong className="text-white">rate-limit,
+            refuse, or remove</strong> events and restrict who may publish, to protect the service
+            and other users from spam, abuse, or unlawful use, and to comply with the law. We do
+            not guarantee message delivery, ordering, or retention, and we are not the author of,
+            and are not responsible for, messages that users send. You are solely responsible for
+            the messages you send, and you must not use messaging for unlawful, abusive, or
+            infringing content or for spam. Because gift-wrapped messages are encrypted end to
+            end, we cannot read or proactively screen their contents; we act on reports and valid
+            legal process, and report unlawful material as described in Section 6. You may use
+            other Nostr relays instead of ours.
           </p>
         </section>
 
@@ -493,6 +568,7 @@ export default function Terms() {
             <li><strong className="text-[#fbeb0a]">Non-Custodial:</strong> You control your keys. We cannot access or recover your funds.</li>
             <li><strong className="text-[#fbeb0a]">Your Responsibility:</strong> Back up your recovery phrase. Losing it means losing your funds forever.</li>
             <li><strong className="text-[#fbeb0a]">Swaps:</strong> Executed by Trocador, not us. We earn a ~1% referral commission that&apos;s already baked into the quoted rate.</li>
+            <li><strong className="text-[#fbeb0a]">Messaging:</strong> Optional encrypted DMs over Nostr. Relays carry only ciphertext; we may rate-limit or refuse abuse, and aren&apos;t responsible for what users send.</li>
             <li><strong className="text-[#fbeb0a]">Irreversible:</strong> Cryptocurrency transactions cannot be cancelled or reversed.</li>
             <li><strong className="text-[#fbeb0a]">No Guarantees:</strong> We provide the service as-is. Use at your own risk.</li>
             <li><strong className="text-[#fbeb0a]">Be Legal:</strong> Don&apos;t use Smirk for illegal activities.</li>

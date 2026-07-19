@@ -36,9 +36,12 @@ export default function Privacy() {
           Smirk is published by <strong className="text-white">Such Software LLC</strong>, a
           single-member limited liability company organized under the laws of the Commonwealth
           of Pennsylvania, United States (&quot;Such Software,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). This policy
-          explains what stays on your device, what our backend receives to power tipping and
-          balances, and which independent third parties see what. It applies to the Smirk browser
-          extension, desktop application, and this website (smirk.cash).
+          explains what stays on your device, what our backend receives to power identity,
+          balances, tipping, and optional messaging, and which independent third parties see
+          what. It applies to the Smirk browser extension, desktop application, and this website
+          (smirk.cash). Smirk&apos;s v0.3 backend is open source and self-hostable: you can run
+          your own instance (or use another operator&apos;s), in which case the backend data
+          described here goes to that server, not ours.
         </p>
 
         {/* Section 1 */}
@@ -101,9 +104,10 @@ export default function Privacy() {
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">D. Bitcoin &amp; Litecoin Public Addresses</h3>
           <p className="text-zinc-400 mb-3">
             To show your BTC and LTC balances and broadcast your transactions, our backend
-            forwards your <strong>public</strong> wallet addresses to mainstream blockchain
-            indexers (e.g. mempool.space for Bitcoin, litecoinspace.org for Litecoin).
-            These are the same indexers most non-custodial wallets use.
+            queries <strong>Electrum/Fulcrum</strong> servers with your <strong>public</strong>
+            wallet addresses. The default configuration uses public Electrum servers, the same
+            kind most non-custodial wallets use; a self-hosted operator can point at their own
+            node instead.
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
             <li><strong className="text-white">What is shared:</strong> only public address strings and signed transaction bytes — never seed phrases or private keys.</li>
@@ -148,6 +152,45 @@ export default function Privacy() {
             <li><strong className="text-white">Referral commission:</strong> Such Software receives a referral commission (around 1% of the swap amount) from Trocador, already reflected in the quoted rate. We are never in custody of or in the settlement path for the swapped funds — see our <Link href="/terms" className="text-[#fbeb0a] hover:underline">Terms</Link> for details.</li>
             <li><strong className="text-white">Opt-in:</strong> no swap data leaves your device until you tap to request a quote.</li>
           </ul>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">H. Nostr Identity &amp; name@smirk.cash</h3>
+          <p className="text-zinc-400 mb-3">
+            Smirk v0.3 gives your wallet a <strong>Nostr identity</strong> — a public key
+            (&quot;npub&quot;) derived from your seed. If you choose a Smirk username and link your
+            npub, our backend stores that <strong>username&nbsp;↔&nbsp;npub</strong> mapping and
+            publishes it in a public <strong>NIP-05 directory</strong> at{' '}
+            <code>/.well-known/nostr.json</code>, so others can verify you as{' '}
+            <strong>name@smirk.cash</strong> and route messages to you.
+          </p>
+          <ul className="space-y-2 text-zinc-400 ml-4">
+            <li><strong className="text-white">Public by design:</strong> a username and npub are public identifiers meant to be looked up. Any name you link is publicly resolvable; a name you have not linked returns nothing (the directory does not reveal whether a name exists).</li>
+            <li><strong className="text-white">Optional:</strong> you do not need a username to use the wallet — it exists only to give you a name@smirk.cash handle and let people find you.</li>
+            <li><strong className="text-white">Derived, not custodial:</strong> your npub is a public key; the matching private key stays on your device with your seed.</li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">I. Encrypted Messaging (Nostr Direct Messages)</h3>
+          <p className="text-zinc-400 mb-3">
+            Smirk v0.3 supports end-to-end <strong>encrypted direct messages</strong> over the
+            Nostr protocol (NIP-17 &quot;gift-wrapping&quot;). Messages are encrypted on your device
+            before they leave it. They travel through Nostr <strong>relays</strong> — public
+            relays and, optionally, one operated by Such Software — which carry only ciphertext
+            they cannot read.
+          </p>
+          <ul className="space-y-2 text-zinc-400 ml-4">
+            <li><strong className="text-white">What a relay we operate can see:</strong> the encrypted envelope, the recipient&apos;s public key (needed to deliver it), and basic metadata (timing, size). It cannot see message contents, and the gift-wrapping hides the real sender.</li>
+            <li><strong className="text-white">Retention:</strong> a relay we operate stores encrypted messages briefly (currently about 30 days) so your other devices can fetch them, then deletes them.</li>
+            <li><strong className="text-white">Your choice of relay:</strong> you can use other Nostr relays instead of, or in addition to, ours — messaging does not depend on us.</li>
+            <li><strong className="text-white">Opt-in:</strong> messaging is a feature you choose to use.</li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">J. IP Addresses</h3>
+          <p className="text-zinc-400 mb-3">
+            Like any internet server, our backend receives your device&apos;s IP address with
+            each request. We store only a <strong>salted, one-way hash</strong> of it, and only
+            for rate-limiting and abuse prevention (for example, throttling automated signups).
+            We do not use it to track you or link it to your wallet, and self-hosting avoids
+            sharing it with us at all.
+          </p>
         </section>
 
         {/* Section 3 */}
@@ -161,6 +204,12 @@ export default function Privacy() {
             <li>
               <strong className="text-white">No Sale of Data:</strong> We do not, and will never,
               sell your social handles, transaction history, or view key data to third parties.
+            </li>
+            <li>
+              <strong className="text-white">Legal requests:</strong> We may access, preserve, or
+              disclose the limited data we hold to comply with valid legal process or applicable
+              law, or to report unlawful content (such as child sexual abuse material) as the law
+              requires.
             </li>
           </ul>
         </section>
@@ -184,12 +233,15 @@ export default function Privacy() {
           <ul className="space-y-2 text-zinc-400">
             <li><strong className="text-[#fbeb0a]">Non-Custodial:</strong> We never see your private spend keys. Your money is yours.</li>
             <li><strong className="text-[#fbeb0a]">View Keys:</strong> We collect Monero/Wownero view keys to scan for your tips so you don&apos;t have to sync the whole blockchain.</li>
-            <li><strong className="text-[#fbeb0a]">Public Addresses:</strong> Your BTC/LTC public addresses are forwarded to mainstream blockchain indexers — the same ones every non-custodial wallet uses. Nothing private.</li>
+            <li><strong className="text-[#fbeb0a]">Public Addresses:</strong> Your BTC/LTC public addresses are queried against Electrum/Fulcrum servers, the same kind every non-custodial wallet uses. Nothing private.</li>
             <li><strong className="text-[#fbeb0a]">Fingerprint:</strong> A one-way SHA-256 of your seed is sent to identify your wallet — not reversible, cannot move funds.</li>
             <li><strong className="text-[#fbeb0a]">Encrypted:</strong> All tip payloads are encrypted on your device.</li>
             <li><strong className="text-[#fbeb0a]">Identity:</strong> We only store your Social ID to help people find your public key.</li>
             <li><strong className="text-[#fbeb0a]">Dapps:</strong> The <code>window.smirk</code> API is opt-in per origin, revocable per origin, and can be turned off globally in Settings.</li>
             <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional, opt-in, routed through third-party aggregators (e.g. Trocador). We never operate an exchange, but we do earn a ~1% referral commission that&apos;s baked into the quoted rate.</li>
+            <li><strong className="text-[#fbeb0a]">Identity:</strong> An optional Smirk username + your linked Nostr key (npub) are public — they back your name@smirk.cash handle. No username, no listing.</li>
+            <li><strong className="text-[#fbeb0a]">Messaging:</strong> Optional end-to-end encrypted DMs over Nostr. Relays (ours or public) carry only ciphertext they can&apos;t read; a relay we run keeps encrypted messages ~30 days.</li>
+            <li><strong className="text-[#fbeb0a]">Self-hostable:</strong> The v0.3 backend is open source — run your own and none of this backend data touches us.</li>
           </ul>
         </section>
 
@@ -198,7 +250,7 @@ export default function Privacy() {
           <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Third parties you choose to enable</h2>
           <p className="text-zinc-400">
             Some features connect you to independent third parties operated by others,
-            not by us — Trocador for swaps, the blockchain indexers noted above, and any
+            not by us — Trocador for swaps, the Electrum servers noted above, and any
             site you connect to through the <code>window.smirk</code> interface. Those
             endpoints see whatever your interactions with them entail, and each has its
             own privacy policy. We neither control nor monitor those connections, and we
@@ -235,7 +287,7 @@ export default function Privacy() {
           </p>
           <p className="text-zinc-400">
             For data held by third parties you&apos;ve used through Smirk (Trocador, node
-            operators, blockchain indexers), contact those providers directly using the
+            operators, Electrum servers), contact those providers directly using the
             privacy contact in their respective policies.
           </p>
         </section>
