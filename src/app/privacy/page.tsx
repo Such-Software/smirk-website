@@ -250,11 +250,16 @@ export default function Privacy() {
           <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Third parties you choose to enable</h2>
           <p className="text-zinc-400">
             Some features connect you to independent third parties operated by others,
-            not by us — Trocador for swaps, the Electrum servers noted above, and any
-            site you connect to through the <code>window.smirk</code> interface. Those
-            endpoints see whatever your interactions with them entail, and each has its
-            own privacy policy. We neither control nor monitor those connections, and we
-            are not responsible for how those parties handle your data.
+            not by us — Trocador for swaps, the Electrum/Fulcrum servers noted above,
+            the public Nostr relays that carry optional messaging, the block explorers
+            opened by &quot;view on explorer&quot; links, and any site you connect to
+            through the <code>window.smirk</code> interface. Because your device contacts
+            these endpoints directly, each can see your IP address alongside whatever the
+            interaction entails — for a swap, the asset pair, amounts, and your
+            destination and refund addresses; for an explorer, the transaction or address
+            you open. Each has its own privacy policy. We neither control nor monitor
+            those connections, and we are not responsible for how those parties handle
+            your data.
           </p>
         </section>
 
