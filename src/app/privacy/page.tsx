@@ -27,9 +27,9 @@ export default function Privacy() {
         </p>
 
         <p className="text-zinc-300 text-lg leading-relaxed">
-          At Smirk, we believe privacy is a fundamental human right. Our architecture is designed
-          so that we never have access to your private keys, unencrypted funds, or the ability
-          to spend your money.
+          Smirk keeps your recovery phrase and private spending keys on your device.
+          Backend services receive the data described below to provide balances and
+          optional features, but do not hold the keys needed to spend your wallet funds.
         </p>
 
         <p className="text-zinc-400">
@@ -55,8 +55,9 @@ export default function Privacy() {
               They are never transmitted to our servers.
             </li>
             <li>
-              <strong className="text-white">No Access:</strong> We cannot &quot;freeze&quot; accounts or
-              &quot;seize&quot; funds because we do not hold the keys to move them.
+              <strong className="text-white">Service access:</strong> An operator can restrict
+              access to its backend, but does not hold the spending keys needed to move
+              your wallet funds.
             </li>
           </ul>
         </section>
@@ -68,9 +69,9 @@ export default function Privacy() {
             To facilitate social tipping and identity verification, we collect the following:
           </p>
 
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">A. Monero &amp; Wownero Private View Keys</h3>
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">A. View Credentials</h3>
           <p className="text-zinc-400 mb-3">
-            To provide a fast mobile and browser-extension experience without requiring you
+            To provide browser-extension and desktop balances without requiring you
             to download the entire blockchain, Smirk collects and stores your Private View
             Keys for Monero (XMR) and Wownero (WOW).
           </p>
@@ -81,10 +82,16 @@ export default function Privacy() {
             </li>
             <li>
               <strong className="text-white">Limitation:</strong> A View Key cannot be used to spend your funds.
-              It only allows the server to see that a transaction has occurred. Your funds remain secure
-              and spendable only by your local Smirk wallet (browser extension or mobile app).
+              It reveals incoming transactions and their amounts. Spending still requires
+              the private spending key held by your wallet.
             </li>
           </ul>
+
+          <p className="text-zinc-400 mt-4">
+            For Grin, the wallet sends a <code>rewind_hash</code> view credential so the
+            backend can find your outputs. A configured Grin light-wallet server can
+            retain this credential and continue scanning. It cannot authorize spending.
+          </p>
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">B. Social Identity Data</h3>
           <p className="text-zinc-400 mb-2">
@@ -98,26 +105,25 @@ export default function Privacy() {
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">C. Transaction Metadata &amp; Payloads</h3>
           <ul className="space-y-2 text-zinc-400 ml-4">
             <li><strong className="text-white">Encrypted Payloads:</strong> The ciphertext of the tip (which we cannot read).</li>
-            <li><strong className="text-white">Status &amp; Timestamps:</strong> Metadata regarding when a tip was created or claimed.</li>
+            <li><strong className="text-white">Tip records:</strong> The asset, amount, funding address, sender or recipient identifiers, status, and creation or claim timestamps needed to route and track the tip.</li>
           </ul>
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">D. Bitcoin &amp; Litecoin Public Addresses</h3>
           <p className="text-zinc-400 mb-3">
             To show your BTC and LTC balances and broadcast your transactions, our backend
             queries <strong>Electrum/Fulcrum</strong> servers with your <strong>public</strong>
-            wallet addresses. The default configuration uses public Electrum servers, the same
-            kind most non-custodial wallets use; a self-hosted operator can point at their own
-            node instead.
+            wallet addresses. The backend operator selects the servers and any fallback
+            providers. Those providers receive the requested address data and the backend&apos;s
+            network connection; this lookup is not anonymous.
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
-            <li><strong className="text-white">What is shared:</strong> only public address strings and signed transaction bytes — never seed phrases or private keys.</li>
-            <li><strong className="text-white">What we store:</strong> nothing additional on our side beyond what is already in your wallet&apos;s local view.</li>
+            <li><strong className="text-white">What is shared:</strong> Public addresses and signed transaction bytes. BTC/LTC transaction outputs expose destinations and amounts to the broadcaster and chain observers. Recovery phrases and private spending keys remain on your device.</li>
           </ul>
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">E. Wallet Fingerprint</h3>
           <p className="text-zinc-400 mb-3">
             On first login your wallet derives a one-way <strong>fingerprint</strong>
-            (SHA-256 of your seed) and sends it to our backend as a stable, anonymous
+            (derived from your wallet seed) and sends it to our backend as a stable, pseudonymous
             identifier. It is used to associate your wallet with social handles and tip
             history across devices, and is the value our backend joins on internally.
             It is <strong>not reversible</strong> back to your seed and cannot be used
@@ -130,12 +136,13 @@ export default function Privacy() {
             smirk.cash, claim pages, and merchant sites can request a connection or a
             signature from your wallet. Connections are per-origin and require an
             explicit approval prompt the first time a site asks; you can revoke any
-            origin at any time from Settings. You can also globally disable the
-            <code>window.smirk</code> surface from Settings — when off, pages cannot
-            detect that Smirk is installed.
+            origin at any time from Settings. Scoped permissions can authorize later
+            requests without another approval screen. Optional password confirmation
+            applies to each send or signing request. You can disable provider injection
+            in Settings; this takes effect when each page next loads.
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
-            <li><strong className="text-white">What gets shared:</strong> only the public material you approve (asset public keys, addresses) plus the signatures you explicitly authorize per request.</li>
+            <li><strong className="text-white">What gets shared:</strong> The public keys, addresses, balances, signatures, and payment results permitted by your grants. Authorized encryption requests can also return an app-specific encryption public key or a separately requested decrypted result. These are separate from the wallet&apos;s spending keys.</li>
             <li><strong className="text-white">What we do not share:</strong> seed phrases, private spend keys, balances of un-authorized assets, history of other origins.</li>
           </ul>
 
@@ -172,24 +179,28 @@ export default function Privacy() {
           <p className="text-zinc-400 mb-3">
             Smirk v0.3 supports end-to-end <strong>encrypted direct messages</strong> over the
             Nostr protocol (NIP-17 &quot;gift-wrapping&quot;). Messages are encrypted on your device
-            before they leave it. They travel through Nostr <strong>relays</strong> — public
-            relays and, optionally, one operated by Such Software — which carry only ciphertext
-            they cannot read.
+            before they leave it. They travel through the configured Nostr <strong>relays</strong>,
+            which receive encrypted message content and routing metadata.
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
-            <li><strong className="text-white">What a relay we operate can see:</strong> the encrypted envelope, the recipient&apos;s public key (needed to deliver it), and basic metadata (timing, size). It cannot see message contents, and the gift-wrapping hides the real sender.</li>
-            <li><strong className="text-white">Retention:</strong> a relay we operate stores encrypted messages briefly (currently about 30 days) so your other devices can fetch them, then deletes them.</li>
+            <li><strong className="text-white">Relay visibility:</strong> Relays receive the encrypted envelope, recipient public key, timing, size, and the IP address of a direct connection. Gift-wrapping conceals the sender in the event format; it does not guarantee anonymity against network observation or correlation.</li>
+            <li><strong className="text-white">Retention:</strong> Retention depends on the relay operator and its configuration. Encrypted messages can be retained so other devices can retrieve them.</li>
             <li><strong className="text-white">Your choice of relay:</strong> you can use other Nostr relays instead of, or in addition to, ours — messaging does not depend on us.</li>
             <li><strong className="text-white">Opt-in:</strong> messaging is a feature you choose to use.</li>
           </ul>
 
+          <p className="text-zinc-400 mt-4">
+            Feed posts and published Nostr profiles are public. Relays and other readers
+            can retain and redistribute them; they are not encrypted direct messages.
+          </p>
+
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">J. IP Addresses</h3>
           <p className="text-zinc-400 mb-3">
             Like any internet server, our backend receives your device&apos;s IP address with
-            each request. We store only a <strong>salted, one-way hash</strong> of it, and only
-            for rate-limiting and abuse prevention (for example, throttling automated signups).
-            We do not use it to track you or link it to your wallet, and self-hosting avoids
-            sharing it with us at all.
+            each request. The backend application uses a <strong>keyed hash</strong> in
+            rate-limit and abuse-prevention records. This does not describe separate
+            reverse-proxy, hosting or third-party logs. Requests to a self-hosted backend
+            go to that operator; other services you use still receive their own requests.
           </p>
         </section>
 
@@ -232,16 +243,16 @@ export default function Privacy() {
           <h2 className="text-lg font-bold text-white mb-4">🛡️ Quick-Glance Summary</h2>
           <ul className="space-y-2 text-zinc-400">
             <li><strong className="text-[#fbeb0a]">Non-Custodial:</strong> We never see your private spend keys. Your money is yours.</li>
-            <li><strong className="text-[#fbeb0a]">View Keys:</strong> We collect Monero/Wownero view keys to scan for your tips so you don&apos;t have to sync the whole blockchain.</li>
-            <li><strong className="text-[#fbeb0a]">Public Addresses:</strong> Your BTC/LTC public addresses are queried against Electrum/Fulcrum servers, the same kind every non-custodial wallet uses. Nothing private.</li>
-            <li><strong className="text-[#fbeb0a]">Fingerprint:</strong> A one-way SHA-256 of your seed is sent to identify your wallet — not reversible, cannot move funds.</li>
+            <li><strong className="text-[#fbeb0a]">View credentials:</strong> The selected backend receives Monero/Wownero view keys and Grin rewind credentials to find incoming funds.</li>
+            <li><strong className="text-[#fbeb0a]">Address privacy:</strong> BTC/LTC lookups reveal addresses to the configured providers. Signed transaction outputs reveal destinations and amounts.</li>
+            <li><strong className="text-[#fbeb0a]">Fingerprint:</strong> A one-way identifier derived from your wallet seed identifies your wallet. It cannot be used to recover your seed or spend funds.</li>
             <li><strong className="text-[#fbeb0a]">Encrypted:</strong> All tip payloads are encrypted on your device.</li>
-            <li><strong className="text-[#fbeb0a]">Identity:</strong> We only store your Social ID to help people find your public key.</li>
+            <li><strong className="text-[#fbeb0a]">Identity:</strong> Registration and optional linked handles associate public keys, a wallet fingerprint, and social identifiers with backend records.</li>
             <li><strong className="text-[#fbeb0a]">Dapps:</strong> The <code>window.smirk</code> API is opt-in per origin, revocable per origin, and can be turned off globally in Settings.</li>
             <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional, opt-in, routed through third-party aggregators (e.g. Trocador). We never operate an exchange, but we do earn a ~1% referral commission that&apos;s baked into the quoted rate.</li>
             <li><strong className="text-[#fbeb0a]">Identity:</strong> An optional Smirk username + your linked Nostr key (npub) are public — they back your name@smirk.cash handle. No username, no listing.</li>
-            <li><strong className="text-[#fbeb0a]">Messaging:</strong> Optional end-to-end encrypted DMs over Nostr. Relays (ours or public) carry only ciphertext they can&apos;t read; a relay we run keeps encrypted messages ~30 days.</li>
-            <li><strong className="text-[#fbeb0a]">Self-hostable:</strong> The v0.3 backend is open source — run your own and none of this backend data touches us.</li>
+            <li><strong className="text-[#fbeb0a]">Messaging:</strong> Direct-message contents are encrypted; relays still see routing and connection metadata. Feed posts and published profiles are public.</li>
+            <li><strong className="text-[#fbeb0a]">Self-hostable:</strong> Backend data goes to the operator you select. Swaps, relays, explorers, and websites remain separate connections.</li>
           </ul>
         </section>
 
@@ -250,16 +261,16 @@ export default function Privacy() {
           <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Third parties you choose to enable</h2>
           <p className="text-zinc-400">
             Some features connect you to independent third parties operated by others,
-            not by us — Trocador for swaps, the Electrum/Fulcrum servers noted above,
-            the public Nostr relays that carry optional messaging, the block explorers
-            opened by &quot;view on explorer&quot; links, and any site you connect to
-            through the <code>window.smirk</code> interface. Because your device contacts
-            these endpoints directly, each can see your IP address alongside whatever the
-            interaction entails — for a swap, the asset pair, amounts, and your
-            destination and refund addresses; for an explorer, the transaction or address
-            you open. Each has its own privacy policy. We neither control nor monitor
-            those connections, and we are not responsible for how those parties handle
-            your data.
+            not by us: Trocador for swaps, Nostr relays, block explorers opened from
+            transaction links, and sites you connect through <code>window.smirk</code>.
+            Direct connections reveal your device&apos;s IP address and the data needed
+            for that interaction: for swaps, the asset pair, amounts, and destination
+            and refund addresses; for explorers, the transaction or address you open.
+            Electrum/Fulcrum requests instead pass through the selected backend, which
+            shares the requested addresses and transaction data with its configured
+            providers. Each provider has its own privacy policy. We neither control
+            nor monitor those connections, and we are not responsible for how those
+            parties handle your data.
           </p>
         </section>
 
@@ -269,9 +280,9 @@ export default function Privacy() {
           <p className="text-zinc-400">
             Smirk is not directed to people under 18, and we do not knowingly collect
             data from minors. If you believe a minor has used Smirk and you want to
-            delete any associated state, uninstalling the extension or app on the
-            relevant device removes all local data; contact us at the address below to
-            remove associated backend records.
+            delete associated backend records, contact us at the address below.
+            Removing local wallet data is a separate action; uninstalling a desktop
+            application may leave its data directory in place.
           </p>
         </section>
 
@@ -280,9 +291,9 @@ export default function Privacy() {
           <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">6. Your rights</h2>
           <p className="text-zinc-400 mb-3">
             Your seed phrase and private spend keys never leave your device, and
-            uninstalling removes all local state. For the limited data our backend does
-            hold (Monero/Wownero view keys, your wallet fingerprint, linked social
-            handles, and encrypted tip metadata), residents of the EU/UK (GDPR Articles
+            deleting local wallet data does not remove backend records. For the data
+            backend services hold (Monero/Wownero view keys, Grin view credentials,
+            your wallet fingerprint, linked social handles, and tip records), residents of the EU/UK (GDPR Articles
             15–22) and California (CCPA / CPRA) may request access to, correction of, or
             deletion of that data by emailing{' '}
             <a href="mailto:support@such.software" className="text-[#fbeb0a] hover:underline">
