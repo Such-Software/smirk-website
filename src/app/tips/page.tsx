@@ -137,7 +137,7 @@ export default function TipsPage() {
     return () => clearInterval(interval);
   }, [token]);
 
-  const handleOpenExtension = (action: 'claim' | 'clawback', tipId?: string) => {
+  const handleOpenExtension = (action: 'claim' | 'clawback') => {
     // Show in-page instructions instead of an alert
     setShowInstructions(action);
   };
@@ -400,7 +400,7 @@ export default function TipsPage() {
 
                 {tip.status === 'pending' && hasExtension && (
                   <button
-                    onClick={() => handleOpenExtension('clawback', tip.id)}
+                    onClick={() => handleOpenExtension('clawback')}
                     className="px-3 py-1.5 text-sm border border-zinc-600 text-zinc-400 rounded-lg hover:border-zinc-500 hover:text-white transition-colors"
                   >
                     Clawback
@@ -462,7 +462,7 @@ export default function TipsPage() {
 
                   {canClaim && hasExtension ? (
                     <button
-                      onClick={() => handleOpenExtension('claim', tip.id)}
+                      onClick={() => handleOpenExtension('claim')}
                       className="px-4 py-1.5 text-sm bg-[#fbeb0a] text-black font-medium rounded-lg hover:bg-[#d4c708] transition-colors"
                     >
                       Claim

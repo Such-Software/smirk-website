@@ -60,7 +60,7 @@ export default function SettingsPage() {
       setDiscordError(null);
 
       completeDiscordOAuth(token, code, state)
-        .then((linkedSocial) => {
+        .then(() => {
           // Refresh socials list
           return getLinkedSocials(token).then((data) => {
             setSocials(data.socials);
