@@ -1,6 +1,9 @@
 // API client for Smirk backend
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+// Public counters (user count, stats) may live on a different backend than
+// sign-in. Unset means the same backend.
+const STATS_API_URL = process.env.NEXT_PUBLIC_STATS_API_URL || API_URL;
 
 export interface ChallengeResponse {
   challenge: string;
@@ -398,7 +401,7 @@ export interface UserCountResponse {
 }
 
 export async function getUserCount(): Promise<UserCountResponse> {
-  const res = await fetch(`${API_URL}/api/v1/users/count`);
+  const res = await fetch(`${STATS_API_URL}/api/v1/users/count`);
 
   if (!res.ok) {
     throw new Error('Failed to get user count');
@@ -419,7 +422,7 @@ export interface PublicStats {
 }
 
 export async function getPublicStats(): Promise<PublicStats> {
-  const res = await fetch(`${API_URL}/api/v1/stats/public`);
+  const res = await fetch(`${STATS_API_URL}/api/v1/stats/public`);
 
   if (!res.ok) {
     throw new Error('Failed to get stats');
