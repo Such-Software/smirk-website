@@ -1,3 +1,5 @@
+import { parseUsernameResponse } from './username';
+
 // API client for Smirk backend
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -24,9 +26,11 @@ export interface AuthResponse {
 
 export interface MeResponse {
   id: string;
-  username: string | null;
-  telegram_id: number | null;
-  telegram_username: string | null;
+  username?: string | null;
+  /** Legacy backend only; absent on the v0.3 backend. */
+  telegram_id?: number | null;
+  /** Legacy backend only; absent on the v0.3 backend. */
+  telegram_username?: string | null;
 }
 
 export async function getChallenge(origin: string): Promise<ChallengeResponse> {
@@ -353,7 +357,7 @@ export async function getMyUsername(token: string): Promise<string | null> {
     throw new Error('Failed to get username');
   }
 
-  return res.json();
+  return parseUsernameResponse(await res.json().catch(() => null));
 }
 
 export async function setUsername(token: string, username: string): Promise<{ username: string }> {
