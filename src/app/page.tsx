@@ -150,8 +150,8 @@ export default function Home() {
         .then((userData) => {
           setUser({
             id: userData.id,
-            telegram_id: userData.telegram_id,
-            telegram_username: userData.telegram_username,
+            telegram_id: userData.telegram_id ?? null,
+            telegram_username: userData.telegram_username ?? null,
           });
           setStep('logged-in');
         })
