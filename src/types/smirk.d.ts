@@ -37,6 +37,10 @@ interface SmirkSignResult {
   signatures: SmirkSignature[];
 }
 
+interface SmirkSignInResult extends SmirkSignResult {
+  publicKeys: SmirkPublicKeys;
+}
+
 interface SmirkClaimResult {
   success: boolean;
   txid?: string;
@@ -72,6 +76,12 @@ interface SmirkAPI {
   getPublicKeys(): Promise<SmirkPublicKeys | null>;
   getAddresses(): Promise<SmirkAddresses | null>;
   signMessage(message: string): Promise<SmirkSignResult>;
+  /**
+   * Connect (when needed) and sign a login challenge in one approval, so a
+   * wallet that locks every time asks for the password once. Newer wallets
+   * only: feature-detect with `typeof window.smirk.signIn === 'function'`.
+   */
+  signIn?(message: string, assets?: SmirkAsset[]): Promise<SmirkSignInResult>;
   /**
    * Request a payment from the user. Surfaces the Smirk send flow
    * pre-filled with the asset/amount/address; user must approve.

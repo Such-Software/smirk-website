@@ -89,8 +89,12 @@ export default function Home() {
 
     try {
       setError(null);
-      // Connect to extension (get public keys)
-      await window.smirk.connect();
+      // A wallet with signIn connects and signs in one approval once a coin is
+      // chosen, so skip the separate connect prompt (and its unlock).
+      if (typeof window.smirk.signIn !== 'function') {
+        // Older wallets: connect first (get public keys), sign afterwards.
+        await window.smirk.connect();
+      }
       setStep('choose-coin');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to connect');
@@ -108,8 +112,20 @@ export default function Home() {
       // Get challenge from backend
       const challenge = await getChallenge(window.location.origin);
 
-      // Sign with the selected coin
-      const result = await window.smirk.signMessage(challenge.challenge);
+      // Sign with the selected coin: one approval on wallets with signIn, the
+      // older connect-then-sign path otherwise.
+      let result: SmirkSignResult | null = null;
+      if (typeof window.smirk.signIn === 'function') {
+        try {
+          result = await window.smirk.signIn(challenge.challenge, [coin]);
+        } catch (e) {
+          if ((e as { code?: string } | null)?.code !== 'UNSUPPORTED') throw e;
+        }
+      }
+      if (!result) {
+        if (!(await window.smirk.isConnected())) await window.smirk.connect();
+        result = await window.smirk.signMessage(challenge.challenge);
+      }
       const sig = result.signatures.find((s) => s.asset === coin);
       if (!sig) {
         throw new Error(`No signature found for ${coin}`);
