@@ -1,4 +1,7 @@
 import { parseUsernameResponse } from './username';
+import { lookupPublicTip, type PublicTipInfo } from './public-tip';
+
+export type { PublicTipInfo } from './public-tip';
 
 // API client for Smirk backend
 
@@ -6,6 +9,9 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 // Public counters (user count, stats) may live on a different backend than
 // sign-in. Unset means the same backend.
 const STATS_API_URL = process.env.NEXT_PUBLIC_STATS_API_URL || API_URL;
+// Tips created by v0.2.x wallets exist only on the legacy backend. The tip page
+// falls back to it when core has no such tip.
+const LEGACY_API_URL = process.env.NEXT_PUBLIC_LEGACY_API_URL || 'https://backend.smirk.cash';
 
 export interface ChallengeResponse {
   challenge: string;
@@ -189,29 +195,12 @@ export async function unlinkSocial(token: string, platform: string): Promise<voi
 // Public Tips
 // =============================================================================
 
-export interface PublicTipInfo {
-  id: string;
-  asset: string;
-  amount: number;
-  status: string;
-  created_at: string;
-  is_public: boolean;
-  funding_confirmations: number;
-  confirmations_required: number;
-}
-
 export async function getPublicTipInfo(tipId: string): Promise<PublicTipInfo> {
-  const res = await fetch(`${API_URL}/api/v1/tips/social/${tipId}/public`);
-
-  if (!res.ok) {
-    if (res.status === 404) {
-      throw new Error('Tip not found or not available');
-    }
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || 'Failed to get tip info');
-  }
-
-  return res.json();
+  return lookupPublicTip(tipId, {
+    apiUrl: API_URL,
+    legacyApiUrl: LEGACY_API_URL,
+    fetchImpl: (url) => fetch(url),
+  });
 }
 
 // =============================================================================

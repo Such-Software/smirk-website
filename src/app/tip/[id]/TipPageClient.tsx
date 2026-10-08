@@ -119,7 +119,12 @@ export default function TipPageClient({ tipId }: { tipId: string }) {
     }
   };
 
+  // Tips made by v0.2.x wallets live on the legacy backend; a v0.3 wallet cannot
+  // claim them yet, so the page shows them without a claim button.
+  const isLegacyTip = tip?.source === 'legacy';
+
   const isClaimable = tip?.status === 'pending' &&
+    !isLegacyTip &&
     tip.is_public &&
     fragmentKey &&
     (tip.funding_confirmations ?? 0) >= (tip.confirmations_required ?? 0);
@@ -255,6 +260,13 @@ export default function TipPageClient({ tipId }: { tipId: string }) {
           )}
 
           {/* Claim button for public tips */}
+          {isLegacyTip && tip.status === 'pending' && (
+            <div className="rounded-lg border border-[#fbeb0a]/30 bg-[#fbeb0a]/5 p-4 text-sm text-gray-300">
+              This tip was made with an earlier version of Smirk. Claiming it from this page
+              needs the next Smirk Wallet update. The tip stays safe until then; keep this link.
+            </div>
+          )}
+
           {isClaimable && !claimSuccess && (
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">
