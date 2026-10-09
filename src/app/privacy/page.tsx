@@ -23,7 +23,7 @@ export default function Privacy() {
       {/* Content */}
       <div className="max-w-2xl w-full bg-zinc-900/50 rounded-2xl p-8 space-y-8">
         <p className="text-zinc-400 text-sm">
-          Effective July 2, 2026.
+          Effective October 9, 2026.
         </p>
 
         <p className="text-zinc-300 text-lg leading-relaxed">
@@ -139,18 +139,22 @@ export default function Privacy() {
             <li><strong className="text-white">What we do not share:</strong> seed phrases, private spend keys, balances of un-authorized assets, history of other origins.</li>
           </ul>
 
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">G. Optional Crypto Swaps</h3>
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">G. Optional Crypto Swaps and Other Third Parties</h3>
           <p className="text-zinc-400 mb-3">
-            Smirk offers in-wallet crypto swaps (e.g. BTC ↔ XMR) via third-party
-            aggregators such as <strong>Trocador</strong>. We do not operate an
-            exchange ourselves. When you choose to swap, the wallet queries the
-            third-party aggregator for quotes and routes the trade through them.
+            Smirk offers in-wallet crypto swaps through independent providers. We do not
+            operate an exchange ourselves and we are never in custody of, or in the settlement
+            path for, the swapped funds. Opening the Swap tab contacts no swap provider. Each
+            provider is contacted only after you choose it, and directly from your device
+            unless stated otherwise, so it sees your IP address.
           </p>
           <ul className="space-y-2 text-zinc-400 ml-4">
-            <li><strong className="text-white">What gets shared with the aggregator:</strong> the asset pair, amount, and your destination and refund public addresses — exactly what the aggregator needs to fulfill the trade.</li>
-            <li><strong className="text-white">Subject to the aggregator&apos;s own privacy policy:</strong> we are a passthrough at trade time. Trocador&apos;s policy lives at <a className="text-[#fbeb0a] hover:underline" href="https://trocador.app/en/privacypolicy/" target="_blank" rel="noopener noreferrer">trocador.app/en/privacypolicy/</a>.</li>
-            <li><strong className="text-white">Referral commission:</strong> Such Software receives a referral commission (around 1% of the swap amount) from Trocador, already reflected in the quoted rate. We are never in custody of or in the settlement path for the swapped funds — see our <Link href="/terms" className="text-[#fbeb0a] hover:underline">Terms</Link> for details.</li>
-            <li><strong className="text-white">Opt-in:</strong> no swap data leaves your device until you tap to request a quote.</li>
+            <li><strong className="text-white">Trocador</strong> (<code>api.trocador.app</code>), when you choose it: the pair and amount for a quote, and your receive and refund addresses when you confirm. Our backend records the swap so its status can be followed. Trocador&apos;s policy lives at <a className="text-[#fbeb0a] hover:underline" href="https://trocador.app/en/privacypolicy/" target="_blank" rel="noopener noreferrer">trocador.app/en/privacypolicy/</a>.</li>
+            <li><strong className="text-white">THORChain</strong>, through Liquify&apos;s public gateway (<code>gateway.liquify.com</code>), when you tap the THORChain card: a pool and vault lookup. A quote sends the pair and amount; confirming sends your receive address and, for a Monero deposit, your refund address; status checks send the deposit&apos;s transaction id. This does not pass through our backend. The swap instruction, including those addresses, is also written into the deposit transaction itself, so it is public on chain.</li>
+            <li><strong className="text-white">NonLogs</strong>, only when the backend you use offers it: the pair, amount, payout address and refund address pass through that backend to NonLogs, which keeps them under the backend operator&apos;s NonLogs account. Your IP address does not reach NonLogs. The backend keeps a record linking your account to the swap for 90 days, without addresses or amounts.</li>
+            <li><strong className="text-white">Neroswap</strong> (<code>neroswap.com</code>), for WOW and GRIN price lookups, only when you tap for live prices.</li>
+            <li><strong className="text-white">The old Smirk server</strong> (<code>backend.smirk.cash</code>), only when you tap to find tips sent to a v0.2 wallet: the wallet signs in there with your pre-v0.3 BTC key, which creates an empty account there if that key never had one.</li>
+            <li><strong className="text-white">Commissions:</strong> Such Software receives a referral commission from Trocador (around 1% of the swap amount) and a share of NonLogs&apos; trading and convenience fees on swaps made through our backend. Both are already reflected in the quoted rate. Our <Link href="/terms" className="text-[#fbeb0a] hover:underline">Terms</Link> describe the Trocador commission.</li>
+            <li><strong className="text-white">Each provider&apos;s own policy applies</strong> to what it receives.</li>
           </ul>
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">H. Nostr Identity &amp; name@smirk.cash</h3>
@@ -181,6 +185,7 @@ export default function Privacy() {
             <li><strong className="text-white">Retention:</strong> a relay we operate stores encrypted messages briefly (currently about 30 days) so your other devices can fetch them, then deletes them.</li>
             <li><strong className="text-white">Your choice of relay:</strong> you can use other Nostr relays instead of, or in addition to, ours — messaging does not depend on us.</li>
             <li><strong className="text-white">Opt-in:</strong> messaging is a feature you choose to use.</li>
+            <li><strong className="text-white">Tips to a Nostr identity:</strong> these travel as gift-wrapped messages on Nostr relays. The key that claims the tip is sealed a second time between sender and recipient, so neither a relay nor a website you have granted Nostr access can read it, and the wallet refuses to decrypt its own tip messages for websites.</li>
           </ul>
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">J. IP Addresses</h3>
@@ -238,7 +243,7 @@ export default function Privacy() {
             <li><strong className="text-[#fbeb0a]">Encrypted:</strong> All tip payloads are encrypted on your device.</li>
             <li><strong className="text-[#fbeb0a]">Identity:</strong> We only store your Social ID to help people find your public key.</li>
             <li><strong className="text-[#fbeb0a]">Dapps:</strong> The <code>window.smirk</code> API is opt-in per origin, revocable per origin, and can be turned off globally in Settings.</li>
-            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional, opt-in, routed through third-party aggregators (e.g. Trocador). We never operate an exchange, but we do earn a ~1% referral commission that&apos;s baked into the quoted rate.</li>
+            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Optional and opt-in through Trocador, THORChain (via Liquify) or NonLogs. Opening the Swap tab contacts no provider. We never operate an exchange, but we earn a commission from Trocador and NonLogs that is already in the quoted rate.</li>
             <li><strong className="text-[#fbeb0a]">Identity:</strong> An optional Smirk username + your linked Nostr key (npub) are public — they back your name@smirk.cash handle. No username, no listing.</li>
             <li><strong className="text-[#fbeb0a]">Messaging:</strong> Optional end-to-end encrypted DMs over Nostr. Relays (ours or public) carry only ciphertext they can&apos;t read; a relay we run keeps encrypted messages ~30 days.</li>
             <li><strong className="text-[#fbeb0a]">Self-hostable:</strong> The v0.3 backend is open source — run your own and none of this backend data touches us.</li>
@@ -250,11 +255,12 @@ export default function Privacy() {
           <h2 className="text-xl font-bold text-[#fbeb0a] mb-4">4. Third parties you choose to enable</h2>
           <p className="text-zinc-400">
             Some features connect you to independent third parties operated by others,
-            not by us — Trocador for swaps, the Electrum/Fulcrum servers noted above,
-            the public Nostr relays that carry optional messaging, the block explorers
+            not by us: Trocador, THORChain through Liquify&apos;s gateway, NonLogs (through
+            our backend), and Neroswap price lookups for swaps, the Electrum/Fulcrum servers
+            noted above, the public Nostr relays that carry optional messaging, the block explorers
             opened by &quot;view on explorer&quot; links, and any site you connect to
-            through the <code>window.smirk</code> interface. Because your device contacts
-            these endpoints directly, each can see your IP address alongside whatever the
+            through the <code>window.smirk</code> interface. Where your device contacts
+            these endpoints directly (everything except NonLogs), each can see your IP address alongside whatever the
             interaction entails — for a swap, the asset pair, amounts, and your
             destination and refund addresses; for an explorer, the transaction or address
             you open. Each has its own privacy policy. We neither control nor monitor
@@ -291,8 +297,9 @@ export default function Privacy() {
             . We do not sell your data.
           </p>
           <p className="text-zinc-400">
-            For data held by third parties you&apos;ve used through Smirk (Trocador, node
-            operators, Electrum servers), contact those providers directly using the
+            For data held by third parties you&apos;ve used through Smirk (Trocador, THORChain
+            and Liquify, NonLogs, Neroswap, node operators, Electrum servers), contact those
+            providers directly using the
             privacy contact in their respective policies.
           </p>
         </section>
