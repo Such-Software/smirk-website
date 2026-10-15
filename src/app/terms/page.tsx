@@ -23,7 +23,7 @@ export default function Terms() {
       {/* Content */}
       <div className="max-w-2xl w-full bg-zinc-900/50 rounded-2xl p-8 space-y-8">
         <p className="text-zinc-400 text-sm">
-          Effective July 2, 2026.
+          Effective October 15, 2026.
         </p>
 
         {/* The short version */}
@@ -248,10 +248,10 @@ export default function Terms() {
 
           <h3 className="text-lg font-semibold text-white mt-6 mb-3">7.1 Swaps (Trocador)</h3>
           <p className="text-zinc-400 mb-4">
-            In-wallet swaps between coins are executed by{' '}
+            Swaps you make through Trocador are executed by{' '}
             <strong className="text-white">Trocador</strong>, a third-party
             non-custodial exchange aggregator, and the underlying exchange providers
-            it routes to — not by Such Software. When you start a swap, order details
+            it routes to, not by Such Software. When you start a Trocador swap, order details
             (input and output coin, amount, and your receiving and refund addresses)
             are sent to Trocador&apos;s API. Such Software does not exchange your assets,
             does not take custody of funds during a swap, and is not the counterparty
@@ -269,14 +269,38 @@ export default function Terms() {
           <p className="text-zinc-400">
             <strong className="text-white">Swap fee.</strong> Such Software receives a
             referral commission (currently around 1% of the swap amount) from Trocador
-            for swaps initiated in the Software. This commission is already reflected
+            for Trocador swaps initiated in the Software. This commission is already reflected
             in the exchange rate shown to you before you confirm a swap; there is no
             separate charge. Because the fee is a referral commission paid by Trocador
             and we are never in custody of or in the settlement path for the swapped
             funds, we act as a referrer, not as a money transmitter or exchanger.
           </p>
 
-          <h3 className="text-lg font-semibold text-white mt-6 mb-3">7.2 Additional providers</h3>
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">7.2 Swaps (THORChain)</h3>
+          <p className="text-zinc-400 mb-4">
+            Swaps you make through THORChain are executed by{' '}
+            <strong className="text-white">THORChain</strong>, a decentralized
+            cross-chain liquidity protocol run by independent node operators, not by
+            Such Software. When you confirm a THORChain swap, your wallet sends your
+            deposit directly to a THORChain vault address, with the swap instructions
+            written into the deposit transaction. Such Software does not exchange your
+            assets, does not take custody of funds during a swap, and is not the
+            counterparty to your trade. Pool prices, protocol fees, and refunds are
+            determined by THORChain.
+          </p>
+          <p className="text-zinc-400">
+            <strong className="text-white">Swap fee.</strong> Such Software receives an
+            affiliate fee (currently 0.25%, or 25 basis points, of the swap amount) on
+            THORChain swaps initiated in the Software. THORChain deducts this fee from
+            the swap, which reduces the amount you receive, and pays it to Such
+            Software&apos;s THORName, <code>suchsoftware</code>. The fee is shown in the
+            quote before you confirm a swap; there is no separate charge. Because
+            THORChain collects and pays the fee and we are never in custody of or in the
+            settlement path for the swapped funds, we do not act as a money transmitter
+            or exchanger.
+          </p>
+
+          <h3 className="text-lg font-semibold text-white mt-6 mb-3">7.3 Additional providers</h3>
           <p className="text-zinc-400">
             We may add other independent swap, exchange, or fiat on-ramp/off-ramp providers
             (and, in the future, peer-to-peer swap functionality) within the Software. Each such
@@ -315,8 +339,9 @@ export default function Terms() {
             and endpoint operators see the information your interaction with them
             entails. Network (miner/validator) fees are charged by the relevant
             blockchain, not by us, and are displayed before you confirm a transaction.
-            Fees, spreads, and limits for third-party services (such as Trocador) are
-            set by those providers. What data goes where is described in our{' '}
+            Fees, spreads, and limits for third-party services (such as Trocador and
+            THORChain) are set by those providers, except the Such Software fees
+            described in Section 7. What data goes where is described in our{' '}
             <Link href="/privacy" className="text-[#fbeb0a] hover:underline">
               Privacy Policy
             </Link>
@@ -567,7 +592,7 @@ export default function Terms() {
           <ul className="space-y-2 text-zinc-400">
             <li><strong className="text-[#fbeb0a]">Non-Custodial:</strong> You control your keys. We cannot access or recover your funds.</li>
             <li><strong className="text-[#fbeb0a]">Your Responsibility:</strong> Back up your recovery phrase. Losing it means losing your funds forever.</li>
-            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Executed by Trocador, not us. We earn a ~1% referral commission that&apos;s already baked into the quoted rate.</li>
+            <li><strong className="text-[#fbeb0a]">Swaps:</strong> Executed by third parties such as Trocador and THORChain, not us. We earn a ~1% referral commission on Trocador swaps and a 0.25% affiliate fee on THORChain swaps, both already in the quote you confirm.</li>
             <li><strong className="text-[#fbeb0a]">Messaging:</strong> Optional encrypted DMs over Nostr. Relays carry only ciphertext; we may rate-limit or refuse abuse, and aren&apos;t responsible for what users send.</li>
             <li><strong className="text-[#fbeb0a]">Irreversible:</strong> Cryptocurrency transactions cannot be cancelled or reversed.</li>
             <li><strong className="text-[#fbeb0a]">No Guarantees:</strong> We provide the service as-is. Use at your own risk.</li>
