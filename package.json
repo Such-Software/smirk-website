@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:downloads": "node --experimental-strip-types --test tests/desktop-downloads.test.mjs"
   },
   "dependencies": {
     "@such-software/smirk-dapp-api": "^0.3.0",
