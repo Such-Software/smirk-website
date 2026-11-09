@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { OFFICIAL_RELEASES } from '@/lib/desktop-releases';
 import { getChallenge, verifySignature, getMe, getUserCount, type AuthResponse } from '@/lib/api';
 
 type Asset = 'btc' | 'ltc' | 'xmr' | 'wow' | 'grin';
@@ -169,8 +170,9 @@ export default function Home() {
   // Show loading while checking session
   if (checkingSession) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex flex-col gap-6 items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-[#fbeb0a] border-t-transparent rounded-full" />
+        <Link href="/downloads" className="text-[#fbeb0a] underline underline-offset-4">Download desktop</Link>
       </div>
     );
   }
@@ -243,6 +245,8 @@ export default function Home() {
         )}
       </div>
 
+      <Link href="/downloads" className="mb-8 rounded-xl border border-[#fbeb0a] px-6 py-3 font-semibold text-[#fbeb0a] hover:bg-zinc-900">Download desktop</Link>
+
       {/* Initial state - Connect button */}
       {step === 'initial' && (
         <div className="flex flex-col items-center gap-6">
@@ -263,7 +267,7 @@ export default function Home() {
                   <span className="text-sm">Chrome Store</span>
                 </a>
                 <a
-                  href="https://github.com/Such-Software/smirk-extension/releases"
+                  href={OFFICIAL_RELEASES}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg
