@@ -11,7 +11,7 @@ This website serves as a hub for Smirk wallet users to:
 - **Manage social tips** - view sent/received, clawback unclaimed
 - **Public stats** - platform growth metrics at /stats
 
-**Important**: This site is ONLY accessible to users with the Smirk extension installed. Authentication happens via cryptographic signatures from the user's wallet keys.
+Public landing, download, demo, and Premium information pages need no extension. Account features require the Smirk extension and authenticate with wallet signatures.
 
 ## Architecture
 
@@ -127,3 +127,18 @@ src/
 
 - [smirk-extension](../smirk-extension) - Browser extension (injects `window.smirk`)
 - [smirk-backend](../smirk-backend) - Rust backend API
+
+## Public navigation and demos
+
+The landing page keeps its existing composition. Compact navigation links to `/downloads`, `/demos`, the Smirk Wallet forum category, and `/premium`. The existing official desktop release parser remains the source of download metadata; development versions are not announced as shipped.
+
+`/demos/basicswap` explains the LTC/WOW protocol-8 target. `/demos/eigenswap` is an unreleased v0.3.3 compatibility preview for the BTC-paying, XMR-receiving taker. Both are browser-local educational simulations with distinct recovery and unknown states. They make no wallet, quote, signing, or payment requests. `/premium` explains the current in-wallet Feed purchase path; it does not implement checkout or grant forum membership.
+
+Run focused source checks with Node 24 or newer:
+
+```sh
+node --test src/lib/swap-demos.test.ts src/lib/public-tip.test.ts src/lib/username.test.ts tests/desktop-downloads.test.mjs
+node node_modules/typescript/bin/tsc --noEmit --incremental false
+```
+
+Production remains the existing reviewed Fleet website artifact and check/diff procedure. A local preview or source merge is not deployment.

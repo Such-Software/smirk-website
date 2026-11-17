@@ -105,3 +105,9 @@ body {
     background: transparent;
   }
 }
+
+/* Dedicated educational pages preserve the landing page composition. */
+.demo-page { width: 100%; max-width: 56rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+.demo-assets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--smirk-yellow); outline-offset: 4px; }
+@media (max-width: 380px) { .demo-page { padding-left: 1rem; padding-right: 1rem; } .demo-assets { gap: .5rem; } }
