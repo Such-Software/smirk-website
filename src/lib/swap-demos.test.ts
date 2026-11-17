@@ -13,7 +13,7 @@ test('unknown evidence preserves the last known stage and locked assets', () => 
 test('complete walkthroughs stop at the final stage', () => {
  for (const demo of SWAP_DEMOS) {
   let state = INITIAL_DEMO_STATE;
-  for (const _ of demo.steps) state = advanceDemo(state, demo.steps.length);
+  for (let index = 0; index < demo.steps.length; index++) state = advanceDemo(state, demo.steps.length);
   assert.equal(state.step, demo.steps.length - 1);
   assert.equal(advanceDemo(state, demo.steps.length).step, state.step);
   assert.equal(simulatedAssetState(state.step, 1), 'Received');

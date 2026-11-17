@@ -11,6 +11,7 @@
  * arrives with the wallet's Nostr dapp-api scope.
  */
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { SimplePool, nip19, type Event as NostrEvent } from 'nostr-tools';
 
 const BACKEND = 'https://api.smirk.cash/api/v1';
@@ -156,11 +157,11 @@ export default function FeedPage(): React.ReactElement {
     <main className="min-h-screen bg-black text-zinc-200">
       <div className="mx-auto max-w-2xl px-4 py-10">
         <header className="mb-8 text-center">
-          <a href="/" className="inline-block">
+          <Link href="/" className="inline-block">
             <span className="text-[#fbeb0a] font-bold text-2xl tracking-wide">
               SMIRK FEED
             </span>
-          </a>
+          </Link>
           <p className="mt-2 text-sm text-zinc-500">
             The self-sovereign Smirk square, on{' '}
             <span className="text-zinc-400">
@@ -220,9 +221,9 @@ export default function FeedPage(): React.ReactElement {
         )}
 
         <footer className="mt-10 text-center text-xs text-zinc-600">
-          <a href="/" className="hover:text-zinc-400">
+          <Link href="/" className="hover:text-zinc-400">
             ← smirk.cash
-          </a>
+          </Link>
         </footer>
       </div>
     </main>
